@@ -9,6 +9,7 @@ export default function Logout() {
     const logoutUser = async () => {
       const accessToken = localStorage.getItem("access_token");
       const refreshToken = localStorage.getItem("refresh_token");
+      const refreshToken = localStorage.getItem("user_id");
 
       try {
         await axios.post(
