@@ -21,11 +21,12 @@ const Layout = () => {
 
   let [showbar , setShowbar] = useState(false);
   let [media , setMedia] = useState(false);
+  const userId = localStorage.getItem("user_id");
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get("http://apichaqimchi.pythonanywhere.com/api/v1/staff/${employee.id}//", {
+        const res = await axios.get("http://apichaqimchi.pythonanywhere.com/api/v1/staff/${userId}//", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
