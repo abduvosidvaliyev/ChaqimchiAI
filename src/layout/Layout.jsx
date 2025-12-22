@@ -40,7 +40,7 @@ const Layout = () => {
     };
 
     fetchProfile();
-  }, []);
+  }, [userId]);
 
 
   useEffect(() => {
