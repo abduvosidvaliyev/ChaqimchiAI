@@ -592,8 +592,8 @@ const Header = ({ employee, toggleTheme, setToggleTheme, setTogglebar, setShowba
                       </span>
                       <div className="d-none d-sm-block">
                         <h6 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '2px' }} className={`profile-name ${toggleTheme ? 'text-black' : 'text-white'}`}>{employee?.first_name} {employee?.last_name}</h6>
-                        <p style={{ fontSize: "15px" }} className="lh-base mb-0 profile-subtext">
-                          {employee?.positions?.current?.title || "-"}
+                        <p style={{ fontSize: "15px" }} className="lh-base mb-0 text-capitalize profile-subtext">
+                          {employee?.role || "-"}
                         </p>
                       </div>
                     </div>

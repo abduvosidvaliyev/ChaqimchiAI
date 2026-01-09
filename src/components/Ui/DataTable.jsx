@@ -11,6 +11,9 @@ function DataTable({
      searchKeys = [],
      countOptions = [10, 25, 50, 100],
 }) {
+
+     const theme = JSON.parse(localStorage.getItem("theme"))    
+
      const [searchQuery, setSearchQuery] = useState("");
      const [entries, setEntries] = useState(countOptions[0]);
      const [currentPage, setCurrentPage] = useState(1);
@@ -101,7 +104,7 @@ function DataTable({
                          shape="rounded"
                          sx={{
                               '& .MuiPaginationItem-root': {
-                                   color: 'rgba(255,255,255,0.85)',
+                                   color: theme ? '#ffffffd9' : '#000000d9',
                                    backgroundColor: 'transparent',
                                    border: 'none'
                               },

@@ -80,7 +80,7 @@ const Teachers = () => {
                 <td>{teacher.phone}</td>
                 <td>
                   <Link
-                    to={`/teacher/${teacher.id}`}
+                    to={`/teachers/${teacher.id}`}
                     title="view"
                   >
                     <Icon icon="mdi:eye-outline" fontSize={25} />

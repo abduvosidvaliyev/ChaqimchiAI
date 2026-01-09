@@ -10,8 +10,10 @@ import { Input } from "../../components/Ui/Input";
 import Notification from "../../components/Ui/Notification"
 import Modal from "../../components/Ui/Modal"
 import DataTable from "../../components/Ui/DataTable"
+import { useNavigate } from "react-router-dom"
 
 const Leads = () => {
+     const navigate = useNavigate()
      const today = new Date().toISOString().split("T")[0];
      const time = new Date().toTimeString().slice(0, 5);
 
@@ -103,7 +105,9 @@ const Leads = () => {
 
      // Ma'lumotlarni o'zgartirish modalini ochish 
 
-     const handleChange = (id) => {
+     const handleChange = (e, id) => {
+          e.stopPropagation()
+          
           const data = leadsData.find(l => l.id === id)
           setChangeData(data)
           setOpemModal(true)
@@ -193,21 +197,27 @@ const Leads = () => {
                               >
 
                               </div>
-                              <div className="d-flex flex-column w-50 gap-3">
+                              <div className="d-flex flex-column w-50">
                                    <span className="fw-bold align-self-end text-white-50">
                                         Boshqa
                                    </span>
-                                   {/* <div className="d-flex flex-column gap-1">
-                                        <input type="date"defaultValue={changeData?.birthday} />
+                                   <Input
+                                        label="Ota-onasi"
+                                        defaultValue={changeData?.parent}
+                                   />
+                                   <Input
+                                        label="Ota-onasi telifon raqami"
+                                        defaultValue={changeData?.parent_phone}
+                                   />
+                                   <div className="d-flex flex-column">
+                                        <label htmlFor="desc" className="form-label">Izoh</label>
+                                        <textarea
+                                             id="desc"
+                                             placeholder="Izoh"
+                                             className="form-control"
+                                             style={{ resize: "none", height: "130px" }}
+                                        ></textarea>
                                    </div>
-                                   <div className="d-flex flex-column gap-1">
-                                        <label htmlFor="subject">Subject</label>
-                                        <input type="text" id="subject" className="form-control" defaultValue={Teacher?.subject} />
-                                   </div>
-                                   <div className="d-flex flex-column gap-1">
-                                        <label htmlFor="class">Class</label>
-                                        <input type="text" id="class" className="form-control" defaultValue={Teacher?.class} />
-                                   </div> */}
                               </div>
 
                          </div>
@@ -641,7 +651,11 @@ const Leads = () => {
                                    >
                                         {(currentDate) =>
                                              currentDate.map((lid, index) => (
-                                                  <tr key={index}>
+                                                  <tr
+                                                       key={index}
+                                                       className="cursor-pointer"
+                                                       onClick={() => navigate(`/leads/${lid.id}`)}
+                                                  >
                                                        <td>{lid.id}</td>
                                                        <td>{lid.name}</td>
                                                        <td>{lid.phone}</td>
@@ -664,15 +678,9 @@ const Leads = () => {
                                                             <span
                                                                  className="py-2 px-2 d-flex justify-content-center align-items-center rounded-2 dots"
                                                                  title="Tahrirlash"
-                                                                 onClick={() => handleChange(lid.id)}
+                                                                 onClick={(e) => handleChange(e, lid.id)}
                                                             >
                                                                  <Icon icon="line-md:pencil-twotone" height="22" />
-                                                            </span>
-                                                            <span
-                                                                 className="py-2 px-2 d-flex justify-content-center align-items-center rounded-2 dots"
-                                                                 title="Izoh"
-                                                            >
-                                                                 <Icon icon="fluent:comment-28-regular" height="22" />
                                                             </span>
                                                        </td>
                                                   </tr>
