@@ -21,6 +21,7 @@ import Lessons from "./pages/Lessons/Lessons";
 import Attendance from "./pages/Attendance/Attendance";
 import Leads from "./pages/Laeds/Leads";
 import { useEffect, useState } from "react";
+import LeadDetail from "./pages/Laeds/LeadDetail";
 
 
 function App() {
@@ -61,8 +62,9 @@ function App() {
             <Route path="exam/result" element={<Result />} />
             <Route path="lessons" element={<Lessons />} />
             <Route path="attendance" element={<Attendance />} />
-            <Route path="teacher/:id" element={<TeacherDetaile />} />
-            <Route path="student/:id" element={<StudentDetaile />} />
+            <Route path="teachers/:id" element={<TeacherDetaile />} />
+            <Route path="students/:id" element={<StudentDetaile />} />
+            <Route path="leads/:id" element={<LeadDetail />} />
           </Route>
         </Route>
 

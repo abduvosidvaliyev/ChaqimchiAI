@@ -87,7 +87,7 @@ const Students = () => {
                 <td>{student.email}</td>
                 <td>
                   <Link
-                    to={`/student/${student.id}`}
+                    to={`/students/${student.id}`}
                     title="view"
                   >
                     <Icon icon="mdi:eye-outline" fontSize={25} />

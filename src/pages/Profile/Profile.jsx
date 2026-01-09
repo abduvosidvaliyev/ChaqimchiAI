@@ -31,17 +31,18 @@ const Profile = () => {
   // **********************************************
   //             API SO'ROVI (GET)
   // **********************************************
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`http://apichaqimchi.pythonanywhere.com/api/v1/staff/profile`, {
+        const res = await axios.get(`http://erpbackend.pythonanywhere.com/api/v1/auth/profile`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
         });
 
-        console.log(res);
+        console.log(res?.data.data);
 
         setEmployee(res?.data.data);
       } catch (err) {
@@ -53,6 +54,10 @@ const Profile = () => {
 
     fetchProfile();
   }, []);
+
+
+
+
 
   // **********************************************
   //             PAROL O'ZGARTIRISH LOGIKASI
@@ -74,11 +79,11 @@ const Profile = () => {
       // Haqiqiy API chaqirig'i misoli
 
       await axios.post(
-        "http://apichaqimchi.pythonanywhere.com/api/v1/staff/profile",
+        "http://erpbackend.pythonanywhere.com/api/v1/auth/change-password/",
         {
           current_password: current,
           new_password: newPass,
-          new_password_confirm: confirm,
+          confirm_password: confirm
         },
         {
           headers: {
@@ -89,13 +94,17 @@ const Profile = () => {
 
       setPasswordStatus("Parol muvaffaqiyatli o'zgartirildi!");
       e.target.reset();
-    } catch (apiError) {
-      console.error("Parol o'zgartirishda xato:", apiError);
-      setPasswordStatus(
-        "Parolni o'zgartirishda xato yuz berdi. Iltimos, hozirgi parolni tekshiring."
-      );
+    }
+
+    catch (apiError) {
+      console.log("Backend javobi:", apiError.response?.data);
+
+      const errorMsg = apiError.response?.data?.detail || "Xatolik yuz berdi";
+      setPasswordStatus(errorMsg);
     }
   };
+
+
 
   const handleSaveChanges = () => {
     setEditModal(false)
@@ -166,12 +175,12 @@ const Profile = () => {
               <Input
                 label="Yashash manzili"
                 placeholder="(Farg'ona)"
-                defaultValue={employee?.address_date}
+                defaultValue={employee?.address}
               />
               <Input
                 label="Tug'ilgan sana"
                 type="date"
-                defaultValue={employee?.birth_date}
+                defaultValue={employee?.date_of_birth}
               />
               <Input
                 label="Ishga olingan sana"
@@ -187,7 +196,7 @@ const Profile = () => {
                   className="form-control"
                   defaultValue={employee?.description}
                   placeholder="Izoh..."
-                  style={{height: "90px"}}
+                  style={{ height: "90px" }}
                 >
 
                 </textarea>
@@ -252,22 +261,21 @@ const Profile = () => {
                       <div className="ms-0 ms-md-3 mb-9 mb-md-0">
                         <div className="d-flex align-items-center justify-content-center justify-content-md-start mb-1">
                           <h4 id="full-name" className="me-3 mb-0 fs-6 fw-bold">
-                            {employee?.full_name}
+                            {employee?.first_name + " " + employee?.last_name}
                           </h4>
                           <span
-                            className="fs-2 rounded-4 fw-bold"
+                            className="fs-2 rounded-4 fw-bold text-capitalize"
                             style={{ color: "#0095db", padding: "1px 10px", background: "#0085db20", border: "1px solid #0095db" }}
                           >
-                            {/* {employee?.is_active ? "Active" : "Inactive"} */}
-                            {employee?.positions?.current?.title || "-"}
+                            {employee?.role}
                           </span>
                         </div>
-                        <p id="positions" className={`fs-5 mt-2 ${employee?.is_active ? "text-success" : "text-danger"}`}>
+                        <p id="positions" className={`fs-5 mt-2 text-success`}>
                           •
                           <span
                             className="text-white fs-3 fw-bold"
                           >
-                            {employee?.is_active ? "  Active" : "  Inactive"}
+                            Active
                           </span>
                         </p>
                       </div>
@@ -370,7 +378,7 @@ const Profile = () => {
                             Address:
                           </strong>
                           <span className="text-muted">
-                            {employee?.branches?.current?.address || "-"}
+                            {employee?.address || "-"}
                           </span>
                         </p>
                       </div>
@@ -387,7 +395,7 @@ const Profile = () => {
                             Birth Date:
                           </strong>
                           <span className="text-muted">
-                            {employee?.birth_date || "-"}
+                            {employee?.date_of_birth || "-"}
                           </span>
                         </p>
 
@@ -430,8 +438,8 @@ const Profile = () => {
 
                         <Form onSubmit={handleChangePassword}>
                           <Form.Group className="mb-3">
-                            <Form.Label>Hozirgi parol</Form.Label>
-                            <Form.Control
+                            <Input
+                              label="Hozirgi parol"
                               type="password"
                               name="currentPassword"
                               required
@@ -439,8 +447,8 @@ const Profile = () => {
                           </Form.Group>
 
                           <Form.Group className="mb-3">
-                            <Form.Label>Yangi parol</Form.Label>
-                            <Form.Control
+                            <Input
+                              label="Yangi parol"
                               type="password"
                               name="newPassword"
                               required
@@ -448,8 +456,8 @@ const Profile = () => {
                           </Form.Group>
 
                           <Form.Group className="mb-3">
-                            <Form.Label>Parolni tasdiqlash</Form.Label>
-                            <Form.Control
+                            <Input
+                              label="Parolni tastiqlash"
                               type="password"
                               name="confirmPassword"
                               required

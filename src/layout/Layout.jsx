@@ -21,7 +21,7 @@ const Layout = ({ toggleTheme, setToggleTheme }) => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get(`http://apichaqimchi.pythonanywhere.com/api/v1/staff/profile`, {
+        const res = await axios.get(`http://erpbackend.pythonanywhere.com/api/v1/auth/profile`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },

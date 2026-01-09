@@ -62,9 +62,9 @@ export default function Login() {
 
       console.log("Serverdan javob:", res);
 
-      if (res.data.data.data && res.data.data.data.access) {
-        localStorage.setItem("access_token", res.data.data.data.access);
-        localStorage.setItem("refresh_token", res.data.data.data.refresh);
+      if (res.data.data && res.data.data.access) {
+        localStorage.setItem("access_token", res.data.data.access);
+        localStorage.setItem("refresh_token", res.data.data.refresh);
         window.location.reload()
       }
     } catch (err) {
