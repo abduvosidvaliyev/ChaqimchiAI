@@ -93,8 +93,8 @@ const StudentDetaile = () => {
                   <input type="date" id="birthday" className="form-control" defaultValue={Student?.birthday} />
                 </div>
                 <div className="d-flex flex-column gap-1">
-                  <label htmlFor="class">Class</label>
-                  <input type="text" id="class" className="form-control" defaultValue={Student?.class} />
+                  <label htmlFor="class">Group</label>
+                  <input type="text" id="class" className="form-control" defaultValue={Student?.group} />
                 </div>
               </div>
             </div>

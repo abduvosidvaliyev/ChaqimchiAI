@@ -36,7 +36,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`http://erpbackend.pythonanywhere.com/api/v1/auth/profile`, {
+        const res = await axios.get(`https://erpbackend.pythonanywhere.com/api/v1/auth/profile`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -79,7 +79,7 @@ const Profile = () => {
       // Haqiqiy API chaqirig'i misoli
 
       await axios.post(
-        "http://erpbackend.pythonanywhere.com/api/v1/auth/change-password/",
+        "https://erpbackend.pythonanywhere.com/api/v1/auth/change-password/",
         {
           current_password: current,
           new_password: newPass,

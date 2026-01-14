@@ -3,6 +3,11 @@
      transition: 0.3s;
 }
 
+.hover-orange:hover{
+    color: #e8c91d;
+    transition: 0.3s;
+}
+
 .modalFadeIn {
     animation: modalFadeIn 0.5s forwards;
 }
@@ -92,4 +97,13 @@
 .dots:hover{
     transition: 0.3s;
     background: #7c8fac40;
+}
+
+#bg-primary{
+    transition: 0.3s;
+}
+
+#bg-primary:hover{
+    background: #0d9eff;
+    color: #05112b !important;
 }

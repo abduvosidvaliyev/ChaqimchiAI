@@ -73,7 +73,7 @@ const Students = () => {
                   <div className="ms-2">
                     <span className="fw-bold text-white">{student.name}</span>
                     <p className="mb-0">
-                      Class: <span className="text-muted">{student.class}</span>
+                      Group: <span className="text-muted">{student.group}</span>
                     </p>
                   </div>
                 </td>

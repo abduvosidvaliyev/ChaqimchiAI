@@ -21,7 +21,7 @@ const Layout = ({ toggleTheme, setToggleTheme }) => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get(`http://erpbackend.pythonanywhere.com/api/v1/auth/profile`, {
+        const res = await axios.get(`https://erpbackend.pythonanywhere.com/api/v1/auth/profile`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -81,7 +81,7 @@ const Layout = ({ toggleTheme, setToggleTheme }) => {
           setMedia={setMedia}
         />
 
-        <Outlet />
+        <Outlet context={{ toggleTheme, setToggleTheme }} />
       </main>
     </div>
   )

@@ -107,7 +107,7 @@ const Leads = () => {
 
      const handleChange = (e, id) => {
           e.stopPropagation()
-          
+
           const data = leadsData.find(l => l.id === id)
           setChangeData(data)
           setOpemModal(true)
@@ -119,7 +119,6 @@ const Leads = () => {
           <>
 
                {/* Ma'lumotni tahrirlash uchun modal */}
-
                {opemModal &&
                     <Modal
                          title={`${changeData?.name} ning ma'lumotlarini yangilash!`}
@@ -250,8 +249,6 @@ const Leads = () => {
                     />
                )}
 
-
-               <BreadcrumbComponent currentPage="Leads" />
 
                <div className="row gap-2 px-4">
                     <Card className="col lidCard">
@@ -387,63 +384,6 @@ const Leads = () => {
                               >
                                    <Icon icon="material-symbols:person-cancel-outline-rounded" width="25" height="25" />
                               </span>
-                         </Card.Body>
-                    </Card>
-               </div>
-
-               <div className="row gap-3 px-4">
-                    <Card className="col px-1 lidCard">
-                         <Card.Body>
-                              <h4 className="fs-6" style={{ fontWeight: "900" }}>
-                                   Lidlar Holati
-                              </h4>
-
-                              <ResponsiveContainer width="100%" height={300}>
-                                   <PieChart>
-                                        <Pie
-                                             data={statusData}
-                                             cx="50%"
-                                             cy="50%"
-                                             labelLine={false}
-                                             label={(entry) => entry.name}
-                                             outerRadius={100}
-                                             fill="#8884d8"
-                                             dataKey="value"
-                                        >
-                                             {statusData.map((entry, index) => (
-                                                  <Cell key={`cell-${index}`} fill={entry.fill} />
-                                             ))}
-                                        </Pie>
-                                        <Tooltip />
-                                   </PieChart>
-                              </ResponsiveContainer>
-                         </Card.Body>
-                    </Card>
-                    <Card className="col px-1 lidCard">
-                         <Card.Body>
-                              <h4 className="fs-6" style={{ fontWeight: "900" }}>
-                                   Lidlar Manbai
-                              </h4>
-
-                              <ResponsiveContainer width="100%" height={300}>
-                                   <PieChart>
-                                        <Pie
-                                             data={sourceData}
-                                             cx="50%"
-                                             cy="50%"
-                                             labelLine={false}
-                                             label={(entry) => entry.name}
-                                             outerRadius={100}
-                                             fill="#8884d8"
-                                             dataKey="value"
-                                        >
-                                             {sourceData.map((entry, index) => (
-                                                  <Cell key={`cell-${index}`} fill={entry.fill} />
-                                             ))}
-                                        </Pie>
-                                        <Tooltip />
-                                   </PieChart>
-                              </ResponsiveContainer>
                          </Card.Body>
                     </Card>
                </div>
@@ -634,6 +574,63 @@ const Leads = () => {
 
                          {/* Lidlar ro'yhati */}
                          <Tab.Pane eventKey="list">
+                              <div className="row gap-3 px-4">
+                                   <Card className="col px-1 lidCard">
+                                        <Card.Body>
+                                             <h4 className="fs-6" style={{ fontWeight: "900" }}>
+                                                  Lidlar Holati
+                                             </h4>
+
+                                             <ResponsiveContainer width="100%" height={300}>
+                                                  <PieChart>
+                                                       <Pie
+                                                            data={statusData}
+                                                            cx="50%"
+                                                            cy="50%"
+                                                            labelLine={false}
+                                                            label={(entry) => entry.name}
+                                                            outerRadius={100}
+                                                            fill="#8884d8"
+                                                            dataKey="value"
+                                                       >
+                                                            {statusData.map((entry, index) => (
+                                                                 <Cell key={`cell-${index}`} fill={entry.fill} />
+                                                            ))}
+                                                       </Pie>
+                                                       <Tooltip />
+                                                  </PieChart>
+                                             </ResponsiveContainer>
+                                        </Card.Body>
+                                   </Card>
+                                   <Card className="col px-1 lidCard">
+                                        <Card.Body>
+                                             <h4 className="fs-6" style={{ fontWeight: "900" }}>
+                                                  Lidlar Manbai
+                                             </h4>
+
+                                             <ResponsiveContainer width="100%" height={300}>
+                                                  <PieChart>
+                                                       <Pie
+                                                            data={sourceData}
+                                                            cx="50%"
+                                                            cy="50%"
+                                                            labelLine={false}
+                                                            label={(entry) => entry.name}
+                                                            outerRadius={100}
+                                                            fill="#8884d8"
+                                                            dataKey="value"
+                                                       >
+                                                            {sourceData.map((entry, index) => (
+                                                                 <Cell key={`cell-${index}`} fill={entry.fill} />
+                                                            ))}
+                                                       </Pie>
+                                                       <Tooltip />
+                                                  </PieChart>
+                                             </ResponsiveContainer>
+                                        </Card.Body>
+                                   </Card>
+                              </div>
+
                               <Row className="card card-body px-3">
                                    <div className="d-flex flex-column gap-1">
                                         <h4 className="fs-6">

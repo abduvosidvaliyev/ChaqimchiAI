@@ -10,17 +10,6 @@ const BreadcrumbComponent = ({ currentPage }) => {
       <div className="Bread px-3 w-30">
         <div className="d-flex align-content-center">
           <h4 className="fs-6">{currentPage || "Profile"}</h4>
-
-          {/* Oldingi sahifaga qaytish */}
-          <button
-            className="button-hover btn btn-sm btn-link text-decoration-none d-flex justify-content-center align-content-center gap-1 fs-2"
-            onClick={() => navigate(-1)}
-          >
-            <Icon icon="lets-icons:back" width="17" height="17" />
-            <span>
-              Orqaga
-            </span>
-          </button>
         </div>
 
         <nav aria-label="breadcrumb">
