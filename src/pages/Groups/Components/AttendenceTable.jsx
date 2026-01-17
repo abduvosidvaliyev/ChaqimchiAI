@@ -1,64 +1,85 @@
-import { Icon } from "@iconify/react";
-import { useEffect, useState } from "react";
-import { Dropdown, Table } from "react-bootstrap";
-import { useTheme } from "../../../Context/Context";
-import { Link } from "react-router-dom";
+import { Icon } from "@iconify/react"
+import { useState } from "react"
+import { Dropdown, Table } from "react-bootstrap"
+import { useTheme } from "../../../Context/Context"
+import { Link } from "react-router-dom"
 
-const AttendenceTable = ({ currentStudents, studentsData, setCurrentStudents }) => {
+const AttendenceTable = ({ currentStudents, studentsData, setCurrentStudents, days_of_week }) => {
      const { theme } = useTheme()
 
-     const [weekStart, setWeekStart] = useState(() => {
-          const d = new Date();
-          const day = d.getDay();
-          const diff = day === 0 ? -6 : 1 - day;
-          d.setDate(d.getDate() + diff);
-          d.setHours(0, 0, 0, 0);
-          return d;
-     })
-
-     const [currentPage, setCurrentPage] = useState(1)
-     const pageSize = 5
-
-     const monthNames = ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun", "Iyul", "Avgust", "Sentyabr", "Oktabr", "Noyabr", "Dekabr"]
-     const weekdaysUz = ["Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba", "Yakshanba"]
-
-     const weekDates = Array.from({ length: 7 }, (_, i) => {
-          const d = new Date(weekStart)
-          d.setDate(weekStart.getDate() + i)
+     // Haftaning dushanbasi
+     const [weekStart] = useState(() => {
+          const d = new Date()
+          const day = d.getDay()
+          const diff = day === 0 ? -6 : 1 - day
+          d.setDate(d.getDate() + diff)
+          d.setHours(0, 0, 0, 0)
           return d
      })
 
-     const formatUz = d => `${d.getDate()} ${monthNames[d.getMonth()]}`
+     const [currentPage, setCurrentPage] = useState(1)
+     const [openDropdown, setOpenDropdown] = useState(null)
 
-     const changeWeek = dir => setWeekStart(d => {
-          const n = new Date(d)
-          n.setDate(n.getDate() + dir * 7)
-          setCurrentPage(1)
-          return n
-     })
+     const WEEKS_PER_PAGE = 2
+     const DAYS_PER_PAGE = WEEKS_PER_PAGE * days_of_week?.length
 
-     const getStatusForStudent = (s, date) => s.attendance?.find(a => a.date === date.toISOString().slice(0, 10))?.status ?? null
+     const monthNames = ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun", "Iyul", "Avgust", "Sentyabr", "Oktabr", "Noyabr", "Dekabr"]
+
+     const dayCodeMap = {
+          1: "Du",
+          2: "Se",
+          3: "Cho",
+          4: "Pay",
+          5: "Ju",
+          6: "Sha",
+          0: "Ya"
+     }
+
+     const getFullDayName = (date) => {
+          const code = dayCodeMap[date.getDay()]
+          return days_of_week?.find(d => d.code === code)?.full
+     }
+
+     // ✅ FAQAT SHU PAGE UCHUN KUNLAR
+     const lessonDates = []
+     let d = new Date(weekStart)
+     d.setDate(d.getDate() + (currentPage - 1) * 7 * WEEKS_PER_PAGE)
+
+     while (lessonDates.length < DAYS_PER_PAGE) {
+          const code = dayCodeMap[d.getDay()]
+          if (days_of_week?.some(day => day.code === code)) {
+               lessonDates.push(new Date(d))
+          }
+          d.setDate(d.getDate() + 1)
+     }
+
+     const getStatusForStudent = (s, date) =>
+          s.attendance?.find(a => a.date === date.toISOString().slice(0, 10))?.status ?? null
 
      const renderBadge = (status) => {
-          if (status === 'bor') return <span className="px-2 py-1 rounded-3" style={{ background: "#00a85425", color: "#00a854" }}>✓ Bor</span>
-          if (status === 'yoq') return <span className="px-2 py-1 rounded-3" style={{ background: "#ff4d4d25", color: "#ff4d4d" }}>✕ Yo'q</span>
-          if (status === 'kech') return <span className="px-2 py-1 rounded-3" style={{ background: "#ffd66a25", color: "#c48a07" }}>⌛ Kech</span>
-          return <span className="text-muted">—</span>
+          if (status === "bor") return "#00a854"
+          if (status === "yoq") return "#ff4d4d"
+          if (status === "sababli") return "#c48a07"
+          return "transparent"
      }
 
      const handleSetAttendance = (studentId, date, status) => {
           const dateStr = date.toISOString().slice(0, 10)
 
-          setCurrentStudents(prev => prev.map(s => s.id !== studentId ? s : ({
-               ...s,
-               attendance: (() => {
-                    const att = Array.isArray(s.attendance) ? [...s.attendance] : []
-                    const idx = att.findIndex(a => a.date === dateStr)
-                    if (idx >= 0) att[idx].status = status
-                    else att.push({ date: dateStr, status })
-                    return att
-               })()
-          })))
+          setCurrentStudents(prev =>
+               prev.map(s =>
+                    s.id !== studentId ? s : {
+                         ...s,
+                         attendance: (() => {
+                              const att = Array.isArray(s.attendance) ? [...s.attendance] : []
+                              const idx = att.findIndex(a => a.date === dateStr)
+                              if (idx >= 0) att[idx].status = status
+                              else att.push({ date: dateStr, status })
+                              return att
+                         })()
+                    }
+               )
+          )
 
           const g = studentsData.find(st => st.id === studentId)
           if (g) {
@@ -70,47 +91,33 @@ const AttendenceTable = ({ currentStudents, studentsData, setCurrentStudents }) 
           }
      }
 
-     useEffect(() => {
-          setCurrentPage(1)
-     }, [currentStudents])
-
      return (
           <>
-               <div className="d-flex align-items-center gap-1 my-3">
-                    <button
-                         className="btn btn-sm border d-flex justify-content-center align-items-center"
-                         onClick={() => changeWeek(-1)}
-                         style={{
-                              background: theme ? "#f1f1f1" : "#15263a",
-                              width: "30px", height: "30px"
-                         }}
-                    >
-                         <Icon icon="akar-icons:chevron-left" width="17" height="17" />
+               {/* HEADER */}
+               <div className="d-flex align-items-center gap-2 my-3">
+                    <button className="btn btn-sm border" onClick={() => setCurrentPage(p => Math.max(1, p - 1))}>
+                         <Icon icon="akar-icons:chevron-left" />
                     </button>
 
-                    <div className="px-1 rounded" style={{ color: theme ? '#000' : '#fff' }}>
-                         {formatUz(weekDates[0])} - {formatUz(weekDates[6])} {weekDates[6].getFullYear()}
-                    </div>
+                    <strong>
+                         {lessonDates[0]?.getDate()} {monthNames[lessonDates[0]?.getMonth()]}
+                         {" - "}
+                         {lessonDates.at(-1)?.getDate()} {monthNames[lessonDates.at(-1)?.getMonth()]}
+                    </strong>
 
-                    <button
-                         className="btn btn-sm border d-flex justify-content-center align-items-center"
-                         onClick={() => changeWeek(1)}
-                         style={{
-                              background: theme ? "#f1f1f1" : "#15263a",
-                              width: "30px", height: "30px"
-                         }}
-                    >
-                         <Icon icon="akar-icons:chevron-right" width="17" height="17" />
+                    <button className="btn btn-sm border" onClick={() => setCurrentPage(p => p + 1)}>
+                         <Icon icon="akar-icons:chevron-right" />
                     </button>
                </div>
 
-               <Table striped hover className="mt-2">
+               {/* TABLE */}
+               <Table striped hover>
                     <thead>
                          <tr>
-                              <th>O'quvchi</th>
-                              {weekDates.map((d, idx) => (
-                                   <th key={idx} className="text-center">
-                                        {weekdaysUz[d.getDay() === 0 ? 6 : d.getDay() - 1]}
+                              <th>O‘quvchi</th>
+                              {lessonDates.map((d, i) => (
+                                   <th key={i} className="text-center">
+                                        {getFullDayName(d)}
                                         <div className="fs-3">{d.getDate()}</div>
                                    </th>
                               ))}
@@ -118,38 +125,65 @@ const AttendenceTable = ({ currentStudents, studentsData, setCurrentStudents }) 
                     </thead>
 
                     <tbody>
-                         {currentStudents.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((student) => (
+                         {currentStudents.map(student => (
                               <tr key={student.id}>
                                    <td>
                                         <Link to={`/students/${student.id}`}>{student.name}</Link>
                                    </td>
 
-                                   {weekDates.map((d, i) => {
+                                   {lessonDates.map((d, i) => {
                                         const status = getStatusForStudent(student, d)
-                                        return (
-                                             <td key={i} className="text-center fs-2">
-                                                  <div className="cursor-pointer position-relative">
-                                                       <Dropdown className="position-absolute" autoClose="outside inside" onClick={(e) => e.stopPropagation()}>
-                                                            <Dropdown.Toggle id="" style={{ background: 'transparent', border: 'none' }}>
-                                                                 {renderBadge(status)}
-                                                            </Dropdown.Toggle>
+                                        const key = `${student.id}-${i}`
 
-                                                            <Dropdown.Menu onClick={(e) => e.stopPropagation()}>
-                                                                 {[
-                                                                      { k: 'bor', label: 'Bor', icon: '✓', style: { background: '#00a854', color: '#fff' } },
-                                                                      { k: 'yoq', label: "Yo'q", icon: '✕', style: { background: '#ff4d4d', color: '#fff' } },
-                                                                      { k: 'kech', label: 'Kech', icon: '⌛', style: { background: '#c48a07', color: '#fff' } }
-                                                                 ].map(o => (
-                                                                      <Dropdown.Item as="button" key={o.k} onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleSetAttendance(student.id, d, o.k) }}>
-                                                                           <div className="d-flex align-items-center gap-2">
-                                                                                <span className="px-2 py-1 rounded" style={o.style}>{o.icon}</span>
-                                                                                <span>{o.label}</span>
-                                                                           </div>
-                                                                      </Dropdown.Item>
-                                                                 ))}
-                                                            </Dropdown.Menu>
-                                                       </Dropdown>
-                                                  </div>
+                                        return (
+                                             <td key={i} className="text-center">
+                                                  <Dropdown
+                                                       show={openDropdown === key}
+                                                       onToggle={() => setOpenDropdown(openDropdown === key ? null : key)}
+                                                  >
+                                                       <Dropdown.Toggle className="no-caret" style={{ background: "transparent", border: "none" }}>
+                                                            <div
+                                                                 style={{
+                                                                      width: 26,
+                                                                      height: 26,
+                                                                      border: "1px solid #ccc",
+                                                                      borderRadius: "50%"
+                                                                 }}
+                                                            >
+                                                                 <div style={{
+                                                                      width: "100%",
+                                                                      height: "100%",
+                                                                      borderRadius: "50%",
+                                                                      background: renderBadge(status)
+                                                                 }} />
+                                                            </div>
+                                                       </Dropdown.Toggle>
+
+                                                       <Dropdown.Menu>
+                                                            {[
+                                                                 { k: "bor", label: "Bor", c: "#00a854" },
+                                                                 { k: "yoq", label: "Yo‘q", c: "#ff4d4d" },
+                                                                 { k: "sababli", label: "Sababli", c: "#c48a07" }
+                                                            ].map(o => (
+                                                                 <Dropdown.Item
+                                                                      key={o.k}
+                                                                      onClick={() => handleSetAttendance(student.id, d, o.k)}
+                                                                 >
+                                                                      <div
+                                                                           className="d-flex align-items-center gap-2"
+                                                                      >
+                                                                           <span
+                                                                                className="px-1 py-1 rounded"
+                                                                                style={{background: o.c}}
+                                                                           >
+                                                                                {o.icon}
+                                                                           </span>
+                                                                           <span style={{ color: o.c }}>{o.label}</span>
+                                                                      </div>
+                                                                 </Dropdown.Item>
+                                                            ))}
+                                                       </Dropdown.Menu>
+                                                  </Dropdown>
                                              </td>
                                         )
                                    })}

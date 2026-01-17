@@ -107,3 +107,7 @@
     background: #0d9eff;
     color: #05112b !important;
 }
+
+.no-caret::after {
+  display: none !important;
+}

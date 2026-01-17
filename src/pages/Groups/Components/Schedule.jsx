@@ -1,20 +1,24 @@
 import { Icon } from "@iconify/react"
 import { useState } from "react"
 import { Table } from "react-bootstrap"
+import { useTheme } from "../../../Context/Context"
 
 const Schedule = ({ schedule_items, setChange_items }) => {
-     const [isEdit, setIsEdit] = useState(false)
+     const { theme } = useTheme()
+     const [isEdit, setIsEdit] = useState(true)
      const active = schedule_items?.active?.map(s => s) ?? []
      const history = schedule_items?.history?.map(s => s) ?? []
-
-     console.log(active)
-
      return (
           <div className="mt-3">
                <h6 className="fw-medium">
                     Ayni paytdagi
                </h6>
-               <div className="mt-3 px-3 py-1 border border-primary-subtle rounded-2" style={{ background: "#0e315065" }}>
+               <div
+                    className="mt-3 px-3 py-1 border border-primary-subtle rounded-2"
+                    style={{
+                         background: !theme ? "#0e315065" : "#4d9ee51d"
+                    }}
+               >
                     <Table className="mb-0">
                          <thead>
                               <tr>

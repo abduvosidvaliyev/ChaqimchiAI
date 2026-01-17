@@ -26,8 +26,6 @@ const Groups = () => {
         })
         const data = await res.json()
         setGroupsData(data?.data)
-        console.log(data?.data);
-
       }
       catch (err) {
         console.log(err);
@@ -165,7 +163,7 @@ const Groups = () => {
           <div className="d-flex flex-column">
             <h3 className="lh-1">Guruhlar</h3>
             <span>
-              Jami {5} ta guruh
+              Jami {groupsData?.length} ta guruh
             </span>
           </div>
         </div>
