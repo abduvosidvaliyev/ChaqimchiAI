@@ -1,6 +1,6 @@
 import "./Header.css";
 import { Icon } from "@iconify/react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const Header = ({ employee, toggleTheme, setToggleTheme, setTogglebar, setShowbar, setMedia }) => {
 
@@ -37,7 +37,7 @@ const Header = ({ employee, toggleTheme, setToggleTheme, setTogglebar, setShowba
   return (
     <header className="topbar sticky-top">
       <div className="with-vertical">
-        <nav className="navbar navbar-expand-lg p-0">
+        <nav className="navbar position-relative navbar-expand-lg p-0">
           <li
             className="nav-item nav-icon-hover-bg rounded-circle"
             onClick={() => { handleBar(), setMedia(false) }}

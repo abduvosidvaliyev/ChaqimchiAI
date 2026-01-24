@@ -1,10 +1,16 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import leadsData from "../../data/Leads.json"
 import { useEffect, useState } from "react"
 import { Icon } from "@iconify/react"
+import Modal from "../../components/Ui/Modal"
 
 const LeadDetail = () => {
      const { id } = useParams()
+     const navigate = useNavigate()
+
+
+     const [addGroup, setAddGroup] = useState(false)
+     const [removeLead, setRemoveLead] = useState(false)
 
      const [currentDate, setCurrentDate] = useState({})
 
@@ -15,8 +21,81 @@ const LeadDetail = () => {
      }, [id])
 
 
+     const handleRemoveLead = () => {
+          leadsData.splice(leadsData.findIndex(l => l.id === Number(id)), 1)
+          navigate("/leads")
+     }
+
+
      return (
           <>
+               {/* Modal for adding group */}
+               {addGroup &&
+                    <Modal
+                         title="Guruhga qo'shish"
+                         close={() => setAddGroup(false)}
+                         anima={addGroup}
+                         width="30%"
+                    >
+                         <div className="">
+                              <label htmlFor="group">Guruh</label>
+                              <select id="group" className="form-select mt-2">
+                                   <option>Web Dasturlash</option>
+                                   <option>Grafik Dizayn</option>
+                                   <option>Digital Marketing</option>
+                                   <option>IT Fundamentals</option>
+                              </select>
+                         </div>
+                         <div className="mt-4 d-flex justify-content-end align-items-center gap-3">
+                              <button
+                                   className="btn btn-sm py-2 px-3"
+                                   onClick={() => setAddGroup(false)}
+                                   style={{ background: "#e0e0e0", color: "#000" }}
+                              >
+                                   Orqaga
+                              </button>
+                              <button
+                                   className="btn btn-sm py-2 px-3"
+                                   style={{ background: "#0085db", color: "#fff" }}
+                              >
+                                   Saqlash
+                              </button>
+                         </div>
+                    </Modal>
+               }
+
+               {/* Modal for removing lead */}
+               {removeLead &&
+                    <Modal
+                         title="O'quvchini ro'yhatdan o'chirish"
+                         close={setRemoveLead}
+                         anima={removeLead}
+                         width="30%"
+                    >
+                         <div className="fs-3">
+                              O'quvchini ro'yhatdan o'chirmoqchimisiz?
+                         </div>
+                         <div className="mt-4 d-flex justify-content-end align-items-center gap-3">
+                              <button
+                                   className="btn btn-sm py-2 px-3"
+                                   onClick={() => setRemoveLead(false)}
+                                   style={{ background: "#e0e0e0", color: "#000" }}
+                              >
+                                   Bekor qilish
+                              </button>
+                              <button
+                                   className="btn btn-sm py-2 px-3"
+                                   style={{ background: "#db0000", color: "#fff" }}
+                                   onClick={handleRemoveLead}    
+                              >
+                                   O'chirish
+                              </button>
+                         </div>
+                    </Modal>
+               }
+
+
+
                <div className="card py-3 px-3">
                     <table>
                          <tr>
@@ -75,13 +154,23 @@ const LeadDetail = () => {
                               <td>{currentDate.parent_phone}</td>
                               <td>{currentDate.description}</td>
                               <td className="d-flex justify-content-center align-items-center gap-2">
-                                   <button className="mt-3 btn btn-sm btn-outline-success d-flex justify-content-center align-items-center gap-1">
-                                        <Icon icon="qlementine-icons:plus-16" width="16" height="16" />
-                                        <span>Guruhga qo'shish</span>
+                                   <button
+                                        className="btn btn-sm mt-3 d-flex justify-content-center align-items-center gap-1"
+                                        style={{ border: "1px solid #09a73b", color: "#09a73b" }}
+                                        title="Guruhga qo'shish"
+                                        onClick={() => setAddGroup(true)}
+                                   >
+                                        <Icon icon="qlementine-icons:plus-16" color="#09a73b" width="16" height="16" />
+                                        <span style={{ color: "#09a73b" }}>Guruhga qo'shish</span>
                                    </button>
-                                   <button className="mt-3 btn btn-sm btn-outline-warning d-flex justify-content-center align-items-center gap-1">
-                                        <Icon icon="flowbite:close-circle-outline" width="24" height="24" />
-                                        <span>O'chirish</span>
+                                   <button
+                                        className="btn btn-sm mt-3 d-flex border-0 justify-content-center align-items-center gap-1"
+                                        style={{ color: "#db0000" }}
+                                        title="Rad etish"
+                                        onClick={() => setRemoveLead(true)}
+                                   >
+                                        <Icon icon="flowbite:close-circle-outline" color="#db0000" width="18" height="18" />
+                                        <span style={{ color: "#e01111" }}>Rad etish</span>
                                    </button>
                               </td>
                          </tr>

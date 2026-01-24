@@ -20,57 +20,60 @@ import Result from "./pages/Exams/Result"
 import Lessons from "./pages/Lessons/Lessons";
 import Attendance from "./pages/Attendance/Attendance";
 import Leads from "./pages/Laeds/Leads";
-import { useEffect, useState } from "react";
 import LeadDetail from "./pages/Laeds/LeadDetail";
+import Groups from "./pages/Groups/Groups";
+import GroupDetalie from "./pages/Groups/GroupDetalie";
+import { ThemeProvider, useTheme } from "./Context/Context";
 
 
 function App() {
 
-  const [theme, setTheme] = useState(() => {
-    return JSON.parse(localStorage.getItem("theme")) ?? true;
-  });
-
-  useEffect(() => {
-    localStorage.setItem("theme", JSON.stringify(theme));
-    document.documentElement.dataset.bsTheme = theme ? "light" : "dark";
-  }, [theme]);
+  // Layout wrapper that reads theme from context and passes as props
+  const LayoutWithTheme = () => {
+    const { theme, setTheme } = useTheme();
+    return (
+      <Layout
+        toggleTheme={theme}
+        setToggleTheme={setTheme}
+      />
+    );
+  };
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/logout" element={<Logout />} />
+    <ThemeProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
 
 
-        <Route element={<ProtectedRoute />}>
-          <Route path="/" element={
-            <Layout
-              toggleTheme={theme}
-              setToggleTheme={setTheme}
-            />
-          }>
-            <Route index element={<Home />} />
-            <Route path="chats" element={<Chats />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="calendar" element={<Calendar />} />
-            <Route path="todo" element={<ToDoLists />} />
-            <Route path="notes" element={<Notes />} />
-            <Route path="teachers" element={<Teachers />} />
-            <Route path="students" element={<Students />} />
-            <Route path="leads" element={<Leads />} />
-            <Route path="exam/schedule" element={<Schedule />} />
-            <Route path="exam/result" element={<Result />} />
-            <Route path="lessons" element={<Lessons />} />
-            <Route path="attendance" element={<Attendance />} />
-            <Route path="teachers/:id" element={<TeacherDetaile />} />
-            <Route path="students/:id" element={<StudentDetaile />} />
-            <Route path="leads/:id" element={<LeadDetail />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<LayoutWithTheme />}>
+              <Route index element={<Home />} />
+              <Route path="chats" element={<Chats />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="calendar" element={<Calendar />} />
+              <Route path="todo" element={<ToDoLists />} />
+              <Route path="notes" element={<Notes />} />
+              <Route path="teachers" element={<Teachers />} />
+              <Route path="students" element={<Students />} />
+              <Route path="groups" element={<Groups />} />
+              <Route path="leads" element={<Leads />} />
+              <Route path="exam/schedule" element={<Schedule />} />
+              <Route path="exam/result" element={<Result />} />
+              <Route path="lessons" element={<Lessons />} />
+              <Route path="attendance" element={<Attendance />} />
+              <Route path="groups/:id" element={<GroupDetalie />} />
+              <Route path="teachers/:id" element={<TeacherDetaile />} />
+              <Route path="students/:id" element={<StudentDetaile />} />
+              <Route path="leads/:id" element={<LeadDetail />} />
+            </Route>
           </Route>
-        </Route>
 
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

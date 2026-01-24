@@ -58,22 +58,6 @@ const Menu = ({ employee, toggleTheme, togglebar, setMedia }) => {
                 <nav className="sidebar-nav">
                   <ul id="sidebarnav">
 
-                    <li className="nav-small-cap">
-                      <Icon
-                        icon="solar:menu-dots-bold-duotone"
-                        className="nav-small-cap-icon fs-5"
-                      />
-                      {togglebar || mouseMove
-                        ? <span className="hide-menu">Bosh sahifa</span>
-                        : <Icon
-                          icon="mdi:dots-horizontal"
-                          width="28"
-                          height="28"
-                          style={{ marginLeft: '3px', cursor: 'pointer', color: '#808090' }}
-                        />
-                      }
-                    </li>
-
                     <li className="sidebar-item">
                       <NavLink
                         className="sidebar-link primary-hover-bg"
@@ -87,7 +71,7 @@ const Menu = ({ employee, toggleTheme, togglebar, setMedia }) => {
                       </NavLink>
                     </li>
 
-                    <li className="sidebar-item">
+                    {/* <li className="sidebar-item">
                       <NavLink
                         className="sidebar-link info-hover-bg"
                         to="/profile"
@@ -98,72 +82,17 @@ const Menu = ({ employee, toggleTheme, togglebar, setMedia }) => {
                         </span>
                         {togglebar || mouseMove ? <span className="hide-menu ps-1">Hisob</span> : ''}
                       </NavLink>
-                    </li>
+                    </li> */}
 
                     <li className="sidebar-item">
                       <NavLink
-                        className="sidebar-link info-hover-bg"
-                        to="/calendar"
-                        aria-expanded="false"
+                        to="/groups"
+                        className={`sidebar-link info-hover-bg`}
                       >
                         <span className="aside-icon p-2 bg-info-subtle rounded-1">
-                          <Icon icon="solar:calendar-add-line-duotone" className="fs-5" />
+                          <Icon icon="mingcute:group-2-line" className="fs-6" />
                         </span>
-                        {togglebar || mouseMove ? <span className="hide-menu ps-1">Kalendar</span> : ''}
-                      </NavLink>
-                    </li>
-
-                    <li className="sidebar-item">
-                      <NavLink
-                        className="sidebar-link success-hover-bg"
-                        to="/todo"
-                        aria-expanded="false"
-                      >
-                        <span className="aside-icon p-2 bg-success-subtle rounded-1">
-                          <Icon icon="solar:window-frame-line-duotone" className="fs-5" />
-                        </span>
-                        {togglebar || mouseMove ? <span className="hide-menu ps-1">Kanban</span> : ''}
-                      </NavLink>
-                    </li>
-
-                    <li className="sidebar-item">
-                      <NavLink
-                        className="sidebar-link secondary-hover-bg"
-                        to="/notes"
-                        aria-expanded="false"
-                      >
-                        <span className="aside-icon p-2 bg-secondary-subtle rounded-1">
-                          <Icon icon="solar:notification-unread-lines-line-duotone" className="fs-5" />
-                        </span>
-                        {togglebar || mouseMove ? <span className="hide-menu ps-1">Izohlar</span> : ''}
-                      </NavLink>
-                    </li>
-
-                    <li className="nav-small-cap mt-3">
-                      <Icon
-                        icon="solar:menu-dots-bold-duotone"
-                        className="nav-small-cap-icon fs-5"
-                      />
-                      {togglebar || mouseMove
-                        ? <span className="hide-menu">Maktab sahifalari</span>
-                        : <Icon
-                          icon="mdi:dots-horizontal"
-                          width="28"
-                          height="28"
-                          style={{ margin: '-15px 0px -5px 3px', cursor: 'pointer', color: '#808090' }}
-                        />
-                      }
-                    </li>
-
-                    <li className="sidebar-item">
-                      <NavLink
-                        to="/teachers"
-                        className={`sidebar-link success-hover-bg d-flex align-items-center`}
-                      >
-                        <span className="aside-icon p-2 bg-success-subtle rounded-1">
-                          <Icon icon="solar:lightbulb-bolt-line-duotone" className="fs-5" />
-                        </span>
-                        {togglebar || mouseMove ? <span className="hide-menu ps-1">Ustozlar</span> : ''}
+                        {togglebar || mouseMove ? <span className="hide-menu ps-1">Guruhlar</span> : ""}
                       </NavLink>
                     </li>
 
@@ -173,18 +102,18 @@ const Menu = ({ employee, toggleTheme, togglebar, setMedia }) => {
                         className={`sidebar-link danger-hover-bg`}
                       >
                         <span className="aside-icon p-2 bg-danger-subtle rounded-1">
-                          <Icon icon="solar:square-academic-cap-line-duotone" className="fs-5" />
+                          <Icon icon="solar:square-academic-cap-line-duotone" className="fs-6" />
                         </span>
-                        {togglebar || mouseMove ? <span className="hide-menu ps-1">Talabalar</span> : ""}
+                        {togglebar || mouseMove ? <span className="hide-menu ps-1">O'quvchilar</span> : ""}
                       </NavLink>
                     </li>
 
                     <li className="sidebar-item">
                       <NavLink
                         to="/leads"
-                        className={`sidebar-link danger-hover-bg`}
+                        className={`sidebar-link warning-hover-bg`}
                       >
-                        <span className="aside-icon p-2 bg-danger-subtle rounded-1">
+                        <span className="aside-icon p-2 bg-warning-subtle rounded-1">
                           <Icon icon="mdi:user-plus-outline" className="fs-6" />
                         </span>
                         {togglebar || mouseMove ? <span className="hide-menu ps-1">Leads</span> : ""}
@@ -192,6 +121,18 @@ const Menu = ({ employee, toggleTheme, togglebar, setMedia }) => {
                     </li>
 
                     <li className="sidebar-item">
+                      <NavLink
+                        to="/teachers"
+                        className={`sidebar-link success-hover-bg d-flex align-items-center`}
+                      >
+                        <span className="aside-icon p-2 bg-success-subtle rounded-1">
+                          <Icon icon="solar:lightbulb-bolt-line-duotone" className="fs-6" />
+                        </span>
+                        {togglebar || mouseMove ? <span className="hide-menu ps-1">Ustozlar</span> : ''}
+                      </NavLink>
+                    </li>
+
+                    {/* <li className="sidebar-item">
                       <a
                         onClick={(e) => {
                           e.preventDefault();
@@ -201,7 +142,7 @@ const Menu = ({ employee, toggleTheme, togglebar, setMedia }) => {
                         aria-expanded={exam}
                       >
                         <span className="aside-icon p-2 bg-warning-subtle rounded-1">
-                          <Icon icon="solar:file-text-line-duotone" className="fs-5" />
+                          <Icon icon="solar:file-text-line-duotone" className="fs-6" />
                         </span>
                         {togglebar || mouseMove ? <span className="hide-menu ps-1">Imtihon</span> : ''}
                       </a>
@@ -220,7 +161,7 @@ const Menu = ({ employee, toggleTheme, togglebar, setMedia }) => {
                           </li>
                         </ul>
                       }
-                    </li>
+                    </li> */}
 
                     <li className="sidebar-item">
                       <NavLink
@@ -229,7 +170,7 @@ const Menu = ({ employee, toggleTheme, togglebar, setMedia }) => {
                         aria-expanded="false"
                       >
                         <span className="aside-icon p-2 bg-indigo-subtle rounded-1">
-                          <Icon icon="solar:planet-3-line-duotone" className="fs-5" />
+                          <Icon icon="solar:planet-3-line-duotone" className="fs-6" />
                         </span>
                         {togglebar || mouseMove ? <span className="hide-menu ps-1">Darslar</span> : ''}
                       </NavLink>
@@ -237,12 +178,12 @@ const Menu = ({ employee, toggleTheme, togglebar, setMedia }) => {
 
                     <li className="sidebar-item">
                       <NavLink
-                        className="sidebar-link info-hover-bg"
+                        className="sidebar-link success-hover-bg"
                         to="/attendance"
                         aria-expanded="false"
                       >
                         <span className="aside-icon p-2 bg-info-subtle rounded-1">
-                          <Icon icon="solar:file-check-line-duotone" className="fs-5" />
+                          <Icon icon="solar:file-check-line-duotone" className="fs-6" />
                         </span>
                         {togglebar || mouseMove ? <span className="hide-menu ps-1">Davomat</span> : ''}
                       </NavLink>
