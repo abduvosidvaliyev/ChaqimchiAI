@@ -34,7 +34,7 @@ const Teachers = () => {
         <Spinner animation="border" variant="primary" />
       </div>
     );
-  }  
+  }
 
   // List rejimi uchun ustunlar
   const listColumns = ["O'qituvchi", "Telefon", "Guruhlar", "Filiallar", "Qo'shilgan sana", "Amallar"];
@@ -176,15 +176,21 @@ const Teachers = () => {
                         <td className="text-end pe-4">
                           <button
                             className="rounded-3 border me-2 "
-                            style={{ background: "#15263a" }}
+                            // style={{ background: "#15263a" }}
+                            title="Ko'rish"
+                            style={{ background: !theme ? "#15263a" : "#f5f5f5" }}
                           >
-                            <Icon icon="lucide:eye" className="text-primary" />
+                            <Icon icon="lucide:eye" color="#0d6efd" />
                           </button>
                           <button
                             className="rounded-3 border"
-                            style={{ background: "#15263a" }}
+                            title="Tahrirlash"
+                            style={{ background: !theme ? "#15263a" : "#f5f5f5" }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
                           >
-                            <Icon icon="lucide:edit" className="text-warning" />
+                            <Icon icon="lucide:edit" color="#fca130" />
                           </button>
                         </td>
                       </tr>

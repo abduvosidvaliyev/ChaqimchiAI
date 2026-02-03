@@ -13,7 +13,7 @@ const TeacherDetail = () => {
 
   const { data: teacher, isLoading: getting, isError } = useTeacher(id);
 
-  const { mutate: deleteTeacher, isLoading: deleting } = useDeleteTeacher()
+  const { mutate: deleteTeacher, isPending: deleting } = useDeleteTeacher()
 
   const [editTeacher, setEditTeacher] = useState(false);
   const [deleteTeacHer, setDeleteTeacher] = useState(false);
