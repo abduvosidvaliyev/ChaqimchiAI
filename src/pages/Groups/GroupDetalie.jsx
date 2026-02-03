@@ -154,18 +154,20 @@ const GroupDetalie = () => {
 
      // delate group
      const DelateGroup = () => {
-          try {
-               deleteGroup(id)
-
-               setNotif({ show: true, type: 'deleted', message: "Guruh muvoffaqyatli o'chirildi" })
-               setDelateGroup(deleting ? false : true)
-
-               // Bosh sahifaga yo'naltiritish
-               window.history.back()
-          } catch (err) {
-               console.error(err)
-               setNotif({ show: true, type: 'error', message: "Xatolik yuz berdi!" })
-          }
+          deleteGroup(
+               id,
+               {
+                    onSuccess: () => {
+                         setNotif({ show: true, type: 'deleted', message: "Guruh muvoffaqyatli o'chirildi" })
+                         setDelateGroup(false)
+                         window.history.back()
+                    },
+                    onError: (err) => {
+                         console.error(err)
+                         setNotif({ show: true, type: 'error', message: "Xatolik yuz berdi!" })
+                    }
+               }
+          )
      }
 
      return (
