@@ -3,8 +3,9 @@ import { useTeachersData } from "../../../data/queries/teachers.queries";
 import { useCourses } from "../../../data/queries/courses.queries";
 import { useCreateLead } from "../../../data/queries/leads.queries";
 import { Input } from "../../../components/Ui/Input";
-
-const d = ["Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba"]
+import SelectDay from "../../../components/Ui/SelectDay";
+import { Spinner } from "react-bootstrap";
+import Modal from "../../../components/Ui/Modal";
 
 const sources = {
      "Instagram": "#ec4899",
@@ -16,7 +17,7 @@ const sources = {
 
 const date = new Date()
 
-const NewLead = ({ setNotif }) => {
+const NewLead = ({ setNotif, show, setShow }) => {
 
      const { data: AllTeacherData } = useTeachersData();
      const { data: AllCoursesData } = useCourses();
@@ -25,7 +26,7 @@ const NewLead = ({ setNotif }) => {
      const coursesData = AllCoursesData?.results
 
      // yangi lid yaratish uchun
-     const { mutate: createLead, isLoading: creating } = useCreateLead();
+     const { mutate: createLead, isPending: creating } = useCreateLead();
 
 
      const [newLidData, setNewLidData] = useState({
@@ -37,7 +38,6 @@ const NewLead = ({ setNotif }) => {
           status: "new",
           create_at: date,
           week_days: [],
-          days_type: "",
           comment: "",
           parent_name: "",
           parent_phone: "",
@@ -46,105 +46,75 @@ const NewLead = ({ setNotif }) => {
           deleted_at: null
      })
 
-     const [otherD, setOtherD] = useState(false)
-
      // Yangi lid qoshish
      const handleSubmit = (e) => {
           e.preventDefault()
-          if (!(newLidData.first_name && newLidData.last_name && newLidData.phone && newLidData.course && newLidData.source && newLidData.teacher && newLidData.week_days)) {
+          if (!(newLidData.first_name && newLidData.last_name && newLidData.phone && newLidData.course && newLidData.week_days)) {
                alert("Asosiy ma'lumotlar to'ldiring!");
                return;
           }
 
-          const { days_type, ...payload } = newLidData;
 
-          createLead(payload)
+          createLead(
+               newLidData,
+               {
+                    onSuccess: () => {
+                         setNewLidData({
+                              first_name: "",
+                              last_name: "",
+                              phone: "",
+                              course: 0,
+                              source: "",
+                              status: "new",
+                              create_at: date,
+                              week_days: [],
+                              comment: "",
+                              parent_name: "",
+                              parent_phone: "",
+                              teacher: "",
+                         })
 
-          setNewLidData({
-               first_name: "",
-               last_name: "",
-               phone: "",
-               course: 2,
-               source: "",
-               status: "new",
-               create_at: date,
-               week_days: [],
-               days_type: "",
-               comment: "",
-               parent_name: "",
-               parent_phone: "",
-               teacher: "",
-          });
-          setOtherD(false)
+                         // bidirishnoma
+                         setNotif({ show: true, type: 'success', message: "Yangi lid muvoffaqyatli qo'shildi" })
+                    },
+                    onError: (err) => {
+                         console.error(err)
+                         setNotif({ show: true, type: 'error', message: "Xatolik yuz berdi!" })
+                    }
+               }
+          )
 
-          // bidirishnoma
-          setNotif({ show: true, type: 'success', message: "Yangi lid muvoffaqyatli qo'shildi" })
-     }
-
-     // kun tanlash
-     const days = (d) => {
-
-          if (d === "b") {
-               setOtherD(true)
-               return
-          }
-
-          let selectedDays = d === "t" ? [1, 3, 5]
-               : d === "j" ? [2, 4, 6]
-                    : []
-
-          setNewLidData(prev => ({
-               ...prev,
-               days_type: d,
-               week_days: selectedDays
-          }));
-     }
-
-
-     const otherDays = ({ i, checked }) => {
-          setNewLidData(prev => {
-               const filteredDays = (prev.week_days || []).filter(id => id !== i);
-
-               return {
-                    ...prev,
-                    days_type: i,
-                    week_days: checked ? [...filteredDays, i] : filteredDays
-               };
-          });
      }
 
      return (
-          <>
-               <div className="d-flex flex-column gap-1">
-                    <h4 className="fs-6">
-                         Yangi lid qo'shish
-                    </h4>
-                    <span className="text-muted">
-                         Yangi lid ma'lumotlarini kiritish
-                    </span>
-               </div>
-
+          <Modal
+               title="Yangi lid qo'shish"
+               close={setShow}
+               anima={show}
+               width="50%"
+               zIndex={100}
+          >
                <form
                     onSubmit={handleSubmit}
                     className="d-flex form-control flex-column mt-3"
                >
                     <div className="row">
                          <Input
-                              label="Ism"
+                              label="Ism *"
                               placeholder="Ism..."
                               containerClassName="col"
                               value={newLidData.first_name}
                               onChange={(e) => setNewLidData({ ...newLidData, first_name: e.target.value })}
                          />
                          <Input
-                              label="Familiya"
+                              label="Familiya *"
                               placeholder="Familiya..."
                               containerClassName="col"
                               value={newLidData.last_name}
                               onChange={(e) => setNewLidData({ ...newLidData, last_name: e.target.value })}
                          />
                          <Input
-                              label="Telifon raqam"
+                              label="Telifon raqam *"
                               placeholder="Raqam..."
                               containerClassName="col"
                               value={newLidData.phone}
@@ -155,7 +125,7 @@ const NewLead = ({ setNotif }) => {
                     <div className="row">
                          <div className="col d-flex flex-column">
                               <label htmlFor="course" className="form-label">
-                                   Kurs
+                                   Kurs *
                               </label>
                               <select
                                    id="course"
@@ -170,6 +140,20 @@ const NewLead = ({ setNotif }) => {
                                    ))}
                               </select>
                          </div>
+
+                         <div className="col d-flex flex-column">
+                              <label htmlFor="days" className="form-label">
+                                   Dars kunlari *
+                              </label>
+                              <SelectDay
+                                   data={newLidData}
+                                   setData={setNewLidData}
+                                   field="week_days"
+                              />
+                         </div>
+                    </div>
+
+                    <div className="row mt-3">
                          <div className="col d-flex flex-column">
                               <label htmlFor="teacher" className="form-label">O'qituvchi</label>
                               <select
@@ -184,51 +168,6 @@ const NewLead = ({ setNotif }) => {
                                         <option key={t.id} value={t.id}>{t.first_name} {" "} {t.last_name}</option>
                                    ))}
                               </select>
-                         </div>
-                    </div>
-
-                    <div className="row mt-3">
-                         <div className="col d-flex flex-column">
-                              <label htmlFor="days" className="form-label">
-                                   Dars Kunlari
-                              </label>
-                              {!otherD ? (
-                                   <select
-                                        id="days"
-                                        className="form-select"
-                                        value={newLidData.days_type}
-                                        onChange={(e) => days(e.target.value)}
-                                   >
-                                        <option hidden value="">Kun tanlash</option>
-                                        <option value="t">Toq kunlar</option>
-                                        <option value="j">Juft Kunlar</option>
-                                        <option value="b">Boshqa Kunlar</option>
-                                   </select>
-                              ) : (
-                                   <div className="d-flex flex-column align-items-start ms-3">
-                                        <div className="d-flex">
-                                             {d.map((day, i) => (
-                                                  <div className="d-flex align-items-center gap-1">
-                                                       <label className="form-label" htmlFor={i}>{day}</label>
-                                                       <input
-                                                            id={i}
-                                                            type="checkbox"
-                                                            className="form-check"
-                                                            onChange={(e) => otherDays({ i: i + 1, checked: e.target.checked })}
-                                                       />
-                                                       &nbsp;
-                                                  </div>
-                                             ))}
-                                        </div>
-                                        <button
-                                             type="button"
-                                             className="btn btn-sm btn-outline-secondary mt-2"
-                                             onClick={() => setOtherD(false)}
-                                        >
-                                             Ortga
-                                        </button>
-                                   </div>
-                              )}
                          </div>
 
                          <div className="col d-flex flex-column">
@@ -286,14 +225,15 @@ const NewLead = ({ setNotif }) => {
                               type="submit"
                               style={{ background: "#0085db" }}
                               disabled={
-                                   !(newLidData.first_name && newLidData.last_name && newLidData.phone && newLidData.course && newLidData.teacher && newLidData.source && newLidData.week_days)}
+                                   !(newLidData.first_name && newLidData.last_name && newLidData.phone && newLidData.course && newLidData.week_days.length > 0) || creating
+                              }
                               className="btn btn-sm px-3 py-2 fs-3 text-white"
                          >
-                              {creating ? "Saqlanmoqda..." : "Saqlash"}
+                              {creating ? <Spinner animation="border" size="sm" /> : "Saqlash"}
                          </button>
                     </div>
                </form>
-          </>
+          </Modal>
      )
 }
 

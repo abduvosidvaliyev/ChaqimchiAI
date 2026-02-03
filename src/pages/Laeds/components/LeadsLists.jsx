@@ -36,13 +36,14 @@ const sourcesD = [
 ];
 
 
-const LeadsLists = ({ leads, totalCount, filters, setFilters, setOpemModal, setSelectOtherD, setChangeData }) => {
+const LeadsLists = ({ leads, totalCount, filters, setFilters, setOpemModal, setSelectOtherD, setChangeData, setShow }) => {
      const navigate = useNavigate()
 
      const { data: teachers } = useTeachersData()
      const teacherData = teachers?.results
 
      const { mutate: updateLead } = useUpdateLead();
+
      const { data: stats } = useLeadsStats(filters)
 
      const [openDropdown, setOpenDropdown] = useState(null)
@@ -112,6 +113,10 @@ const LeadsLists = ({ leads, totalCount, filters, setFilters, setOpemModal, setS
      }));
 
 
+     const handleSearch = (query) => {
+          setFilters(prev => ({ ...prev, search: query, page: 1 }));
+     };
+
      return (
           <>
                <div className="card card-body px-4 mt-3">
@@ -174,9 +179,20 @@ const LeadsLists = ({ leads, totalCount, filters, setFilters, setOpemModal, setS
                     </div>
 
                     <div className="d-flex flex-column gap-3">
-                         <div className="d-flex flex-column gap-1">
-                              <h4 className="fs-6">Lidlar ro'yhati</h4>
-                              <span className="text-muted">Barcha lidlar ma'lumotlari</span>
+                         <div className="d-flex justify-content-between align-items-center">
+                              <div className="d-flex flex-column gap-1">
+                                   <h4 className="fs-6">Lidlar ro'yhati</h4>
+                                   <span className="text-muted">Barcha lidlar ma'lumotlari</span>
+                              </div>
+                              <button
+                                   className="btn btn-sm fs-3 px-4 text-white"
+                                   style={{ background: "#0085db", padding: "10px 20px" }}
+                                   onClick={() => setShow(true)}
+                              >
+                                   <Icon icon="qlementine-icons:plus-16" width="15" height="15" />
+                                   &nbsp;
+                                   Yangi lid qo'shish
+                              </button>
                          </div>
 
                          <div className="d-flex gap-2 align-items-center">
@@ -221,6 +237,7 @@ const LeadsLists = ({ leads, totalCount, filters, setFilters, setOpemModal, setS
                          totalCount={totalCount}
                          onPageChange={handlePageChange}
                          onEntriesChange={handleLimitChange}
+                         onSearch={handleSearch}
                          columns={["№", "Ism", "Telefon", "Holati", "Yaratilgan vaqti", "O'qituvchi", "Kurs", "Vaqti", "Amallar"]}
                          searchKeys={["first_name", "last_name", "phone"]}
                     >
@@ -294,18 +311,17 @@ const LeadsLists = ({ leads, totalCount, filters, setFilters, setOpemModal, setS
                                         </td>
                                         <td>{lid?.created_at?.split("T")[0].split("-").reverse().join(".")}</td>
                                         <td>
-                                             {teacherData.find(t => t.id === Number(lid.teacher))?.first_name}
+                                             {teacherData?.find(t => t.id === Number(lid.teacher))?.first_name}
                                              {" "}
-                                             {teacherData.find(t => t.id === Number(lid.teacher))?.last_name}
+                                             {teacherData?.find(t => t.id === Number(lid.teacher))?.last_name}
                                         </td>
                                         <td>{lid?.course?.name}</td>
                                         <td className="text-capitalize">
                                              {lid?.week_days?.map(d => d.code + ", ")}
                                         </td>
-                                        <td className="d-flex align-items-center gap-1 text-center cursor-pointer">
+                                        <td>
                                              <span
-                                                  className="py-2 px-2 d-flex justify-content-center align-items-center rounded-2 dots"
-                                                  title="Tahrirlash"
+                                                  className="py-2 px-2 d-flex justify-content-center align-items-center rounded-2 dots cursor-pointer"
                                                   onClick={(e) => handleChange(e, lid.id)}
                                              >
                                                   <Icon icon="line-md:pencil-twotone" height="22" />

@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react";
 import { Pagination } from "@mui/material";
 import EntriesSelect from "./EntriesSelect";
-import { useTheme } from "../../Context/Context";
 import { Table } from "react-bootstrap";
 
 function DataTable({
@@ -13,12 +12,11 @@ function DataTable({
      totalCount,
      onPageChange,
      onEntriesChange,
+     onSearch,
      searchKeys = [],
      countOptions = [10, 25, 50, 100],
+     theme
 }) {
-
-     const { theme } = useTheme()
-
      const [searchQuery, setSearchQuery] = useState("");
      const [entries, setEntries] = useState(countOptions[0]);
      const [currentPage, setCurrentPage] = useState(1);
@@ -28,15 +26,15 @@ function DataTable({
 
      /* 🔍 SEARCH */
      const filteredData = useMemo(() => {
-          const safeData = Array.isArray(data) ? data : [];
-          if (!searchQuery || isServerSide) return safeData;
+          if (!searchQuery) return data;
 
-          return safeData.filter(item =>
-               searchKeys.some(key =>
-                    String(item[key]).toLowerCase().includes(searchQuery.toLowerCase())
-               )
+          return data.filter(item =>
+               searchKeys.some(key => {
+                    const value = item[key];
+                    return value && String(value).toLowerCase().includes(searchQuery.toLowerCase());
+               })
           );
-     }, [data, searchQuery, searchKeys, isServerSide]);
+     }, [data, searchQuery, searchKeys]);
 
      /* 📄 PAGINATION */
      const total = isServerSide ? totalCount : filteredData.length;
@@ -45,7 +43,7 @@ function DataTable({
      const indexOfLast = currentPage * entries;
      const indexOfFirst = indexOfLast - entries;
 
-     const currentData = isServerSide ? (Array.isArray(data) ? data : []) : filteredData.slice(indexOfFirst, indexOfLast);
+     const currentData = isServerSide ? data : filteredData.slice(indexOfFirst, indexOfLast);
 
      const handleEntriesChange = (e) => {
           setEntries(e);
@@ -58,10 +56,25 @@ function DataTable({
           if (onPageChange) onPageChange(e, value);
      };
 
+     const handleSearch = (e) => {
+          const value = e.target.value;
+          setSearchQuery(value);
+          setCurrentPage(1);
+
+          if (onSearch) onSearch(value); // ✅ to‘g‘ri qiymat
+     };
+
+     const handleKeyDown = (e) => {
+          if (e.key === "Enter") {
+               setCurrentPage(1);
+               if (onSearch) onSearch(searchQuery);
+          }
+     };
+
      return (
           <div className="card-body">
                <div className="d-flex justify-content-between">
-                    {title ? <h5>{title}</h5> : ""}
+                    {title ? <h5 className="fs-6">{title}</h5> : ""}
                     {button}
                </div>
 
@@ -77,10 +90,8 @@ function DataTable({
                          className="form-control my-3 w-25"
                          placeholder="Search..."
                          value={searchQuery}
-                         onChange={e => {
-                              setSearchQuery(e.target.value);
-                              setCurrentPage(1);
-                         }}
+                         onChange={handleSearch}
+                    // onKeyDown={handleKeyDown}
                     />
                </div>
 
@@ -132,7 +143,7 @@ function DataTable({
                               },
                               '& .Mui-disabled': {
                                    opacity: 0.65,
-                                   color: !theme ? "rgba(255,255,255,0.6)" : ""
+                                   color: theme ? "rgba(255,255,255,0.6)" : ""
                               }
                          }}
                     />
