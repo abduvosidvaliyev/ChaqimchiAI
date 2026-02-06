@@ -4,7 +4,7 @@ import DataTable from "../../components/Ui/DataTable";
 import CalendarSelector from "../../components/Ui/CalendarSelector";
 import StatusDropdown from "../../components/Ui/StatusFilter";
 import NoteOffcanvas from "../../components/Ui/NoteOffcanvas";
-import Modal from "../../components/UI/Modal"
+import Modal from "../../components/Ui/Modal"
 import Notification from "../../components/Ui/Notification";
 import { Icon } from "@iconify/react";
 import { useTheme } from "../../Context/Context";
