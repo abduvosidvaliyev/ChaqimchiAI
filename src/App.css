@@ -146,3 +146,26 @@
 .shadow-hover:hover{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
 }
+
+.save-button{
+    background: #0085db !important;
+    transition: 0.3s !important; 
+    color: #fff !important;
+    border: 1px solid #0085db !important;
+    padding: 8px 24px !important;
+}
+
+.save-button:hover{
+    background: #0085db30 !important;
+}
+
+.delete-button{
+    background: #db323220 !important;
+    transition: 0.3s !important; 
+    color: #cd3232 !important;
+    border: 1px solid #cd3232 !important;
+}
+
+.delete-button:hover{
+    background: #db323230 !important;
+}
