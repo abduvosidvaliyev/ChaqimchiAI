@@ -19,10 +19,10 @@ const Leads = () => {
           page: 1,
           limit: 10,
           status: "",
-          source: "",
           start_date: "",
           end_date: "",
-          period: ""
+          period: "",
+          search: ""
      });
 
      // lidlarni royxati
@@ -30,8 +30,9 @@ const Leads = () => {
      const leads = data?.results || [];
      const totalCount = data?.count || 0;
 
+
      // lidlar boyicha statistika 
-     const { data: stats } = useLeadsStats()
+     const { data: stats } = useLeadsStats(filters)
 
      // lidlarni o'zgartirish
      const { mutate: editLead, isPending: editLeadPending } = useEditLead()
@@ -244,7 +245,7 @@ const Leads = () => {
 
                {show && <NewLead setNotif={setNotif} setShow={setShow} show={show} />}
 
-               <div className="row gap-2 px-4">
+               <div className="row gap-2 ps pe-4" style={{paddingLeft: "13px"}}>
                     <Card className="col lidCard">
                          <Card.Body className="d-flex justify-content-between align-items-center px-2 py-3">
                               <div className="d-flex flex-column gap-1">
@@ -255,7 +256,7 @@ const Leads = () => {
                                         className="fs-8"
                                         style={{ color: "#0095db", fontWeight: "900" }}
                                    >
-                                        {stats?.count}
+                                        {stats?.count || 0}
                                    </span>
                               </div>
                               <span

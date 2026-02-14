@@ -1,5 +1,5 @@
 import { Dropdown } from "react-bootstrap";
-import { useTheme } from "../../../Context/Context";
+import { useTheme } from "../../Context/Context";
 import "./StatusFilter.css";
 import { Icon } from "@iconify/react";
 
@@ -10,15 +10,15 @@ export default function StatusDropdown({ currentItem, setCurrentItem, statuses =
           <Dropdown autoClose="outside inside">
                {/* TOGGLE */}
                <Dropdown.Toggle
-                    className={`fs-3 d-flex align-items-center rounded border gap-2 ${!theme ? "text-white" : "text-dark"
+                    className={`fs-3 d-flex align-items-center rounded-1 border gap-2 ${!theme ? "text-white" : "text-dark"
                          }`}
                     style={{
                          background: !theme ? "#0f172a" : "#fff",
-                         padding: "11.5px 25px 11.5px 15px",
+                         padding: `11.5px 25px 11.5px ${currentItem.color ? "0px" : "11.5px"}`,
                          width: "195px"
                     }}
                >
-                    <span className={`dot dot-${currentItem.color}`}></span>
+                    {currentItem.color ? <span className={`ms-2 dot dot-${currentItem.color}`}></span> : ""}
                     {currentItem.label}
                </Dropdown.Toggle>
 
@@ -26,7 +26,7 @@ export default function StatusDropdown({ currentItem, setCurrentItem, statuses =
                <Dropdown.Menu
                     className="px-2 py-3 rounded w-auto"
                     style={{
-                         boxShadow: `0px 0px 10px ${!theme ? "#1e293b" : "#ccc"}`,
+                         boxShadow: `0px 0px 10px ${!theme ? "rgba(0, 0, 0, 0.3)" : "#ccc"}`,
                     }}
                >
                     {statuses.map(item => (

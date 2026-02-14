@@ -2,6 +2,8 @@ import { useState, useMemo } from "react";
 import { Pagination } from "@mui/material";
 import EntriesSelect from "./EntriesSelect";
 import { Table } from "react-bootstrap";
+import { Input } from "./Input";
+import { useTheme } from "../../Context/Context";
 
 function DataTable({
      title,
@@ -12,11 +14,12 @@ function DataTable({
      totalCount,
      onPageChange,
      onEntriesChange,
+     filter,
      onSearch,
      searchKeys = [],
      countOptions = [10, 25, 50, 100],
-     theme
 }) {
+     const { theme } = useTheme();
      const [searchQuery, setSearchQuery] = useState("");
      const [entries, setEntries] = useState(countOptions[0]);
      const [currentPage, setCurrentPage] = useState(1);
@@ -58,25 +61,27 @@ function DataTable({
 
      const handleSearch = (e) => {
           const value = e.target.value;
+          if (value.length === 0) {
+               onSearch("");
+          }
           setSearchQuery(value);
-          setCurrentPage(1);
-
-          if (onSearch) onSearch(value); // ✅ to‘g‘ri qiymat
      };
 
      const handleKeyDown = (e) => {
           if (e.key === "Enter") {
                setCurrentPage(1);
-               if (onSearch) onSearch(searchQuery);
+
+               if (onSearch && searchQuery.length > 0) onSearch(searchQuery);
           }
      };
 
      return (
           <div className="card-body">
-               <div className="d-flex justify-content-between">
-                    {title ? <h5 className="fs-6">{title}</h5> : ""}
-                    {button}
-               </div>
+               {title ?
+                    <div className="d-flex justify-content-between">
+                         <h5 className="fs-6">{title}</h5>
+                         {button}
+                    </div> : ""}
 
                <div className="d-flex justify-content-between border-bottom">
                     <EntriesSelect
@@ -85,14 +90,18 @@ function DataTable({
                          onChange={handleEntriesChange}
                     />
 
-                    <input
-                         type="search"
-                         className="form-control my-3 w-25"
-                         placeholder="Search..."
-                         value={searchQuery}
-                         onChange={handleSearch}
-                    // onKeyDown={handleKeyDown}
-                    />
+                    <div className="d-flex align-items-center gap-2">
+                         <Input
+                              type="search"
+                              placeholder="Search..."
+                              className="my-3"
+                              style={{ width: "250px" }}
+                              value={searchQuery}
+                              onChange={handleSearch}
+                              onKeyDown={handleKeyDown}
+                         />
+                         {filter}
+                    </div>
                </div>
 
                <div className="table-responsive">
@@ -143,7 +152,7 @@ function DataTable({
                               },
                               '& .Mui-disabled': {
                                    opacity: 0.65,
-                                   color: theme ? "rgba(255,255,255,0.6)" : ""
+                                   color: !theme ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)"
                               }
                          }}
                     />

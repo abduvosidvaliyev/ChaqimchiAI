@@ -1,6 +1,6 @@
 import { Card, Dropdown } from "react-bootstrap";
 import DataTable from "../../../components/Ui/DataTable";
-import StatusDropdown from "./StatusFilter";
+import StatusDropdown from "../../../components/Ui/StatusFilter";
 import CalendarSelector from "../../../components/Ui/CalendarSelector";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { useState } from "react";
@@ -26,16 +26,6 @@ const statuses = [
      { key: "contacted", label: "Bog‘lanilgan", color: "muted" },
 ];
 
-const sourcesD = [
-     { key: "all", label: "Barcha manbalar", },
-     { key: "Telegram", label: "Telegram", },
-     { key: "Facebook", label: "Facebook", },
-     { key: "Tavsiya", label: "Tavsiya", },
-     { key: "Banner", label: "Banner", },
-     { key: "Instagram", label: "Instagram", },
-];
-
-
 const LeadsLists = ({ leads, totalCount, filters, setFilters, setOpemModal, setChangeData, setShow }) => {
      const navigate = useNavigate()
 
@@ -44,7 +34,7 @@ const LeadsLists = ({ leads, totalCount, filters, setFilters, setOpemModal, setC
 
      const { mutate: updateLead } = useUpdateLead();
 
-     const { data: stats } = useLeadsStats(filters)
+     const { data: stats } = useLeadsStats()
 
      const [openDropdown, setOpenDropdown] = useState(null)
 
@@ -59,10 +49,6 @@ const LeadsLists = ({ leads, totalCount, filters, setFilters, setOpemModal, setC
 
      const handleStatusChange = (status) => {
           setFilters(prev => ({ ...prev, status: status.key === "all" ? "" : status.key, page: 1 }));
-     };
-
-     const handleSourceChange = (source) => {
-          setFilters(prev => ({ ...prev, source: source.key === "all" ? "" : source.key, page: 1 }));
      };
 
      const handleDateRange = (range) => {
@@ -111,74 +97,81 @@ const LeadsLists = ({ leads, totalCount, filters, setFilters, setOpemModal, setC
           fill: sources[source],
      }));
 
-
-     const handleSearch = (query) => {
-          setFilters(prev => ({ ...prev, search: query, page: 1 }));
+     const handleFilterChange = (key, value) => {
+          setFilters(prev => ({
+               ...prev,
+               [key]: value === "all" ? "" : value,
+               page: 1
+          }));
      };
 
      return (
           <>
-               <div className="card card-body px-4 mt-3">
+               <div className="card card-body px-4 mt-3 overflow-hidden">
 
-                    <div className="row gap-3 px-3">
-                         <Card className="col px-1 lidCard">
-                              <Card.Body>
-                                   <h4 className="fs-6" style={{ fontWeight: "900" }}>
-                                        Lidlar Holati
-                                   </h4>
+                    <div className="row g-3 mb-4 mx-0">
+                         <div className="col-12 col-xl-6">
+                              <Card className="lidCard h-100">
+                                   <Card.Body>
+                                        <h4 className="fs-6" style={{ fontWeight: "900" }}>
+                                             Lidlar Holati
+                                        </h4>
 
-                                   <ResponsiveContainer width="100%" height={300}>
-                                        <PieChart>
-                                             <Pie
-                                                  data={statusData}
-                                                  cx="50%"
-                                                  cy="50%"
-                                                  labelLine={false}
-                                                  label={(entry) => entry.name}
-                                                  outerRadius={100}
-                                                  fill="#8884d8"
-                                                  dataKey="value"
-                                             >
-                                                  {statusData.map((entry, index) => (
-                                                       <Cell key={`cell-${index}`} fill={entry.fill} />
-                                                  ))}
-                                             </Pie>
-                                             <Tooltip />
-                                        </PieChart>
-                                   </ResponsiveContainer>
-                              </Card.Body>
-                         </Card>
-                         <Card className="col px-1 lidCard">
-                              <Card.Body>
-                                   <h4 className="fs-6" style={{ fontWeight: "900" }}>
-                                        Lidlar Manbai
-                                   </h4>
+                                        <ResponsiveContainer width="99%" height={300}>
+                                             <PieChart>
+                                                  <Pie
+                                                       data={statusData}
+                                                       cx="50%"
+                                                       cy="50%"
+                                                       labelLine={false}
+                                                       label={(entry) => entry.name}
+                                                       outerRadius={100}
+                                                       fill="#8884d8"
+                                                       dataKey="value"
+                                                  >
+                                                       {statusData.map((entry, index) => (
+                                                            <Cell key={`cell-${index}`} fill={entry.fill} />
+                                                       ))}
+                                                  </Pie>
+                                                  <Tooltip />
+                                             </PieChart>
+                                        </ResponsiveContainer>
+                                   </Card.Body>
+                              </Card>
+                         </div>
+                         <div className="col-12 col-xl-6">
+                              <Card className="lidCard h-100">
+                                   <Card.Body>
+                                        <h4 className="fs-6" style={{ fontWeight: "900" }}>
+                                             Lidlar Manbai
+                                        </h4>
 
-                                   <ResponsiveContainer width="100%" height={300}>
-                                        <PieChart>
-                                             <Pie
-                                                  data={sourceData}
-                                                  cx="50%"
-                                                  cy="50%"
-                                                  labelLine={false}
-                                                  label={(entry) => entry.name}
-                                                  outerRadius={100}
-                                                  fill="#8884d8"
-                                                  dataKey="value"
-                                             >
-                                                  {sourceData.map((entry, index) => (
-                                                       <Cell key={`cell-${index}`} fill={entry.fill} />
-                                                  ))}
-                                             </Pie>
-                                             <Tooltip />
-                                        </PieChart>
-                                   </ResponsiveContainer>
-                              </Card.Body>
-                         </Card>
+                                        <ResponsiveContainer width="99%" height={300}>
+                                             <PieChart>
+                                                  <Pie
+                                                       data={sourceData}
+                                                       cx="50%"
+                                                       cy="50%"
+                                                       labelLine={false}
+                                                       label={(entry) => entry.name}
+                                                       outerRadius={100}
+                                                       fill="#8884d8"
+                                                       dataKey="value"
+                                                  >
+                                                       {sourceData.map((entry, index) => (
+                                                            <Cell key={`cell-${index}`} fill={entry.fill} />
+                                                       ))}
+                                                  </Pie>
+                                                  <Tooltip />
+                                             </PieChart>
+                                        </ResponsiveContainer>
+                                   </Card.Body>
+                              </Card>
+                         </div>
                     </div>
 
                     <div className="d-flex flex-column gap-3">
-                         <div className="d-flex justify-content-between align-items-center">
+                         <div className="d-flex flex-wrap justify-content-between align-items-center gap-3">
                               <div className="d-flex flex-column gap-1">
                                    <h4 className="fs-6">Lidlar ro'yhati</h4>
                                    <span className="text-muted">Barcha lidlar ma'lumotlari</span>
@@ -194,7 +187,8 @@ const LeadsLists = ({ leads, totalCount, filters, setFilters, setOpemModal, setC
                               </button>
                          </div>
 
-                         <div className="d-flex gap-2 align-items-center">
+                         {/* filters */}
+                         <div className="d-flex flex-wrap gap-2 align-items-center">
                               <CalendarSelector onRangeSelect={handleDateRange} filters={filters} />
 
                               <StatusDropdown
@@ -203,13 +197,7 @@ const LeadsLists = ({ leads, totalCount, filters, setFilters, setOpemModal, setC
                                    setCurrentItem={handleStatusChange}
                               />
 
-                              <StatusDropdown
-                                   statuses={sourcesD}
-                                   currentItem={sourcesD.find(s => s.key === (filters.source || "all"))}
-                                   setCurrentItem={handleSourceChange}
-                              />
-
-                              {(filters.status || filters.source || filters.start_date) && (
+                              {(filters.status || filters.start_date) && (
                                    <button
                                         className="btn btn-sm fs-4 d-flex align-items-center gap-2 px-3 py-2"
                                         onClick={() => {
@@ -236,9 +224,9 @@ const LeadsLists = ({ leads, totalCount, filters, setFilters, setOpemModal, setC
                          totalCount={totalCount}
                          onPageChange={handlePageChange}
                          onEntriesChange={handleLimitChange}
-                         onSearch={handleSearch}
                          columns={["№", "Ism", "Telefon", "Holati", "Yaratilgan vaqti", "O'qituvchi", "Kurs", "Vaqti", "Amallar"]}
                          searchKeys={["first_name", "last_name", "phone"]}
+                         onSearch={(v) => handleFilterChange("search", v)}
                     >
                          {(currentData) =>
                               currentData.map((lid, index) => (
