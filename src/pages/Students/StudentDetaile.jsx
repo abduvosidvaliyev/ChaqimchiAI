@@ -43,9 +43,6 @@ const StudentDetaile = () => {
   const [paymentType, setPaymentType] = useState("cash");
   const [selectedGroup, setSelectedGroup] = useState("");
 
-  console.log(selectedGroup);
-
-
   const [activeTab, setActiveTab] = useState("tahrirlash");
 
   const [totalToPay, setTotalToPay] = useState(0);
@@ -271,7 +268,7 @@ const StudentDetaile = () => {
                   checked={paymentType === "cash"}
                   onChange={(e) => setPaymentType(e.target.value)}
                 />
-                <label className={`form-check-label ${textColor}`} htmlFor="cash">Naqd</label>
+                <label className={`form-check-label`} htmlFor="cash">Naqd</label>
               </div>
               <div className="form-check">
                 <input
@@ -283,7 +280,7 @@ const StudentDetaile = () => {
                   checked={paymentType === "card"}
                   onChange={(e) => setPaymentType(e.target.value)}
                 />
-                <label className={`form-check-label ${textColor}`} htmlFor="card">Plastik</label>
+                <label className={`form-check-label`} htmlFor="card">Plastik</label>
               </div>
             </div>
           )}

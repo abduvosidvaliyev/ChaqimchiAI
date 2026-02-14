@@ -49,7 +49,7 @@ const Students = () => {
 
   const { data: students, isLoading, error } = useStudentsData(filters);
   const studentsData = students?.results || [];
-  
+
   const [notif, setNotif] = useState({ show: false, message: "", type: "" });
 
   const [showNotes, setShowNotes] = useState(false);
@@ -65,7 +65,7 @@ const Students = () => {
     }));
   };
 
-  const handleDateRange = (range) => {    
+  const handleDateRange = (range) => {
     setFilters(prev => ({
       ...prev,
       start_date: range.start || "",
@@ -95,18 +95,11 @@ const Students = () => {
       }
 
       {isAddModalOpen && (
-        <Modal
-          title="Yangi o'quvchi qo'shish"
+        <StudentAdd
+          open={isAddModalOpen}
           close={setIsAddModalOpen}
-          anima={isAddModalOpen}
-          width="50%"
-          zIndex={100}
-        >
-          <StudentAdd
-            close={setIsAddModalOpen}
-            setNotif={setNotif}
-          />
-        </Modal>
+          setNotif={setNotif}
+        />
       )}
 
       <div className="card card-body">
@@ -175,7 +168,7 @@ const Students = () => {
         <DataTable
           data={studentsData || []}
           totalCount={students?.count}
-          columns={["№", "Talaba", "Telefon", "Balans", "To'lov sanasi", "Yaratilgan sana", "Guruh", ""]}
+          columns={["№", "Talaba", "Telefon", "Balans", "Yaratilgan sana", "Guruh", ""]}
           onPageChange={(e, v) => setFilters(p => ({ ...p, page: v }))}
           onEntriesChange={(l) => setFilters(p => ({ ...p, limit: l, page: 1 }))}
           onSearch={(v) => handleFilterChange("search", v)}
@@ -215,13 +208,6 @@ const Students = () => {
                   </span>
                 </td>
                 <td>
-                  <span>
-                    {student.payment_date ?
-                      student.payment_date?.split("T")[0].split("-").reverse().join(".") + " | " + student.payment_date?.split("T")[1].slice(0, 5)
-                      : "-"}
-                  </span>
-                </td>
-                <td>
                   <span>{
                     student.created_at ?
                       student.created_at.split("T")[0].split("-").reverse().join(".") + " | " + student.created_at.split("T")[1].slice(0, 5)
@@ -229,9 +215,15 @@ const Students = () => {
                   </span>
                 </td>
                 <td>
-                  <span className={`badge bg-dark-subtle border border-secondary ${!theme ? "text-white" : "text-black"}`}>
-                    {student.group?.name || "Guruhsiz"}
-                  </span>
+                  {student.groups?.length > 1 ? (
+                    <span className={`badge bg-dark-subtle border border-secondary ${!theme ? "text-white" : "text-black"}`}>
+                      {student.groups?.length || "Guruhsiz"}
+                    </span>
+                  ) : (
+                    <span className={`badge bg-dark-subtle border border-secondary ${!theme ? "text-white" : "text-black"}`}>
+                      {student.groups?.map(g => g.group_name).join(", ") || "Guruhsiz"}
+                    </span>
+                  )}
                 </td>
                 <td>
                   <button

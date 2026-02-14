@@ -1,14 +1,14 @@
 .hover-white:hover {
-     color: #eaeff4;
-     transition: 0.3s;
+    color: #eaeff4;
+    transition: 0.3s;
 }
 
 .no-hover-effect:hover {
-     background-color: transparent !important;
-     color: inherit !important;
+    background-color: transparent !important;
+    color: inherit !important;
 }
 
-.hover-orange:hover{
+.hover-orange:hover {
     color: #e8c91d;
     transition: 0.3s;
 }
@@ -17,11 +17,11 @@
     animation: modalFadeIn 0.5s forwards;
 }
 
-.button-delate{
+.button-delate {
     transition: 0.3s;
 }
 
-.button-delate:hover{
+.button-delate:hover {
     background: #cd3232 !important;
     color: #fff !important;
 }
@@ -44,6 +44,7 @@
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -61,6 +62,7 @@
         opacity: 1;
         transform: scale(1);
     }
+
     to {
         opacity: 0;
         transform: scale(0);
@@ -82,7 +84,7 @@
 
 /* Notification animations */
 .cp-notification {
-    animation: notifIn 600ms cubic-bezier(.22,.9,.36,1) both;
+    animation: notifIn 600ms cubic-bezier(.22, .9, .36, 1) both;
 }
 
 .cp-notification.hide {
@@ -90,13 +92,27 @@
 }
 
 @keyframes notifIn {
-    from { opacity: 0; transform: translateX(100px) scale(.98); }
-    to   { opacity: 1; transform: translateX(-20px) scale(1); }
+    from {
+        opacity: 0;
+        transform: translateX(100px) scale(.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-20px) scale(1);
+    }
 }
 
 @keyframes notifOut {
-    from { opacity: 1; transform: translateX(-20px) scale(1); }
-    to   { opacity: 0; transform: translateX(100px) scale(.98); }
+    from {
+        opacity: 1;
+        transform: translateX(-20px) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(100px) scale(.98);
+    }
 }
 
 .button-hover {
@@ -110,62 +126,70 @@
     opacity: 1;
 }
 
-.lidCard{
+.lidCard {
     transition: 0.3s;
     cursor: pointer;
     border: 1px solid transparent !important;
 }
 
-.lidCard:hover{
+.lidCard:hover {
     border: 1px solid #0095db50 !important;
 }
 
 
-.dots:hover{
+.dots:hover {
     transition: 0.3s;
     background: #7c8fac40;
 }
 
-#bg-primary{
+#bg-primary {
     transition: 0.3s;
 }
 
-#bg-primary:hover{
+#bg-primary:hover {
     background: #0d9eff;
     color: #05112b !important;
 }
 
 .no-caret::after {
-  display: none !important;
+    display: none !important;
 }
 
-.shadow-hover{
+.shadow-hover {
     transition: 0.3s;
 }
 
-.shadow-hover:hover{
+.shadow-hover:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
 }
 
-.save-button{
+.save-button {
     background: #0085db !important;
-    transition: 0.3s !important; 
+    transition: 0.3s !important;
     color: #fff !important;
     border: 1px solid #0085db !important;
     padding: 8px 24px !important;
 }
 
-.save-button:hover{
+.save-button:hover {
     background: #0085db99 !important;
 }
 
-.delete-button{
+.delete-button {
     background: #db323220 !important;
-    transition: 0.3s !important; 
+    transition: 0.3s !important;
     color: #cd3232 !important;
     border: 1px solid #cd3232 !important;
+    padding: 8px 24px !important;
 }
 
-.delete-button:hover{
+.delete-button:hover {
     background: #db323230 !important;
+}
+
+.cencel-button {
+    background: #f9f9f9 !important;
+    transition: 0.3s !important;
+    color: #000 !important;
+    padding: 8px 24px !important;
 }
