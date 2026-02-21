@@ -38,11 +38,8 @@ const StudentAdd = ({ close, setNotif, open }) => {
                 close(false);
                 setNotif({ show: true, message: "O'quvchi muvaffaqiyatli qo'shildi", type: "success" });
             },
-            onError: (error) => {
-                if (error.response?.status === 400) {
-                    // Xatoliklarni statega yozish
-                    setServerErrors(error.response.data?.data || {});
-                }
+            onError: (err) => {
+                console.log(err)
                 setNotif({ show: true, message: "Ma'lumotlarni to'ldirishda xatolik!", type: "error" });
             }
         });

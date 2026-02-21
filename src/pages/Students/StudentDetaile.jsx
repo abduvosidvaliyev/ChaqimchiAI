@@ -7,7 +7,7 @@ import { useCreateStudentDiscount, useCreateStudentTransaction, useUpdateStudent
 import { Input } from "../../components/Ui/Input";
 import { ReactSelect } from "../../components/Ui/ReactSelect";
 import { useTheme } from "../../Context/Context";
-import Notification from "../../components/Ui/Notification";
+import { useNotification } from "../../Context/NotificationContext";
 import Modal from "../../components/Ui/Modal";
 import { useCourses } from "../../data/queries/courses.queries";
 import { useAddStudentToGroup, useGroups } from "../../data/queries/group.queries";
@@ -55,11 +55,9 @@ const StudentDetaile = () => {
 
   const { data: attendancesData, isLoading: attendancesLoading, error: attendancesError } = useStudentAttendances(id)
 
-  console.log(attendancesData)
-
 
   const [student, setStudent] = useState(null);
-  const [notif, setNotif] = useState({ show: false, type: "", message: "" })
+  const { setNotif } = useNotification()
   const [deleteStudent, setDeleteStudent] = useState(false)
   const [addStudentGroup, setAddStudentGroup] = useState(false)
   const [modal, setModal] = useState(null)
@@ -293,19 +291,17 @@ const StudentDetaile = () => {
       onSuccess: () => {
         setNotif({ show: true, type: "success", message: "Status muvaffaqiyatli o'zgartirildi!" });
         setOpenDropdown(null);
+      },
+      onError: (err) => {
+        console.error(err)
+        setNotif({ show: true, type: "error", message: "Xatolik yuz berdi!" });
       }
     })
   }
 
   return (
     <>
-      {notif.show &&
-        <Notification
-          type={notif.type}
-          message={notif.message}
-          onClose={() => setNotif({ ...notif, show: false })}
-        />
-      }
+
 
       {modal &&
         <Modal

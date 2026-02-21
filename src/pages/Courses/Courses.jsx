@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import { useCourses, useDeleteCourses } from "../../data/queries/courses.queries";
 import { useTheme } from "../../Context/Context";
 import DataTable from "../../components/Ui/DataTable";
-import Notification from "../../components/Ui/Notification";
+import { useNotification } from "../../Context/NotificationContext";
 import CourseModal from "./modals/CourseModal";
 import Modal from "../../components/Ui/Modal";
 
@@ -22,7 +22,7 @@ const Courses = () => {
   const [editCourseData, setEditCourseData] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState(null);
-  const [notif, setNotif] = useState({ show: false, type: "", message: "" });
+  const { setNotif } = useNotification();
 
   if (gettingCoursesData) {
     return (
@@ -57,7 +57,7 @@ const Courses = () => {
 
   return (
     <>
-      {notif.show && <Notification type={notif.type} message={notif.message} onClose={() => setNotif({ ...notif, show: false })} />}
+
 
       {newCourse && <CourseModal show={newCourse} setShow={setNewCourse} setNotif={setNotif} />}
 

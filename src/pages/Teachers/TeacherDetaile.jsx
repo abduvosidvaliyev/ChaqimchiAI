@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react";
 import { useTheme } from "../../Context/Context";
 import { useDeleteTeacher, useTeacher } from "../../data/queries/teachers.queries";
 import TeacherModal from "./modals/TeacherModal";
-import Notification from "../../components/Ui/Notification";
+import { useNotification } from "../../Context/NotificationContext";
 import Modal from "../../components/Ui/Modal";
 
 const TeacherDetail = () => {
@@ -17,7 +17,7 @@ const TeacherDetail = () => {
 
   const [editTeacher, setEditTeacher] = useState(false);
   const [deleteTeacHer, setDeleteTeacher] = useState(false);
-  const [notif, setNotif] = useState({ show: false, type: "", message: "" });
+  const { setNotif } = useNotification();
 
   const navigate = useNavigate();
   const { theme } = useTheme();
@@ -67,7 +67,7 @@ const TeacherDetail = () => {
   return (
     <>
 
-      {notif.show && <Notification type={notif.type} message={notif.message} onClose={() => setNotif({ ...notif, show: false })} />}
+
 
       {editTeacher && <TeacherModal show={editTeacher} setShow={setEditTeacher} setNotif={setNotif} editData={teacher} />}
 
