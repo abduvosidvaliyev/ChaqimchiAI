@@ -6,7 +6,7 @@ import Modal from "../../components/Ui/Modal";
 import { Input } from "../../components/Ui/Input"
 import { useState } from "react";
 import { useTheme } from "../../Context/Context";
-import Notification from "../../components/Ui/Notification";
+import { useNotification } from "../../Context/NotificationContext";
 import { useBranchesData } from "../../data/queries/branches.queries";
 
 const Rooms = () => {
@@ -18,14 +18,14 @@ const Rooms = () => {
 
     const roomsData = rooms?.results || [];
     const branchesData = branches?.results || [];
-    
+
 
     const [addRoom, setAddRoom] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [selectedId, setSelectedId] = useState(null);
     const [deleteModal, setDeleteModal] = useState(false); // O'chirish modali uchun state
 
-    const [notif, setNotif] = useState({ show: false, type: "", message: "" });
+    const { setNotif } = useNotification();
 
     const [roomForm, setRoomForm] = useState({
         name: "",
@@ -110,11 +110,7 @@ const Rooms = () => {
 
     return (
         <>
-            {notif.show && <Notification
-                type={notif.type}
-                message={notif.message}
-                onClose={() => setNotif({ ...notif, show: false })}
-            />}
+
 
             {/* Qo'shish va Tahrirlash Modali */}
             {addRoom &&

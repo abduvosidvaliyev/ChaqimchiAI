@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import { useTeachersDataFullInfo } from "../../data/queries/teachers.queries";
 import { useTheme } from "../../Context/Context";
 import DataTable from "../../components/Ui/DataTable";
-import Notification from "../../components/Ui/Notification";
+import { useNotification } from "../../Context/NotificationContext";
 import { useNavigate } from "react-router-dom";
 import TeacherModal from "./modals/TeacherModal";
 
@@ -28,7 +28,7 @@ const Teachers = () => {
   const teachersData = teachers?.results || [];
 
   const [newTeacher, setNewTeacher] = useState(false);
-  const [notif, setNotif] = useState({ show: false, type: "", message: "" })
+  const { setNotif } = useNotification()
   const [viewMode, setViewMode] = useState("grid");
 
   const [editTeacher, setEditTeacher] = useState(false);
@@ -94,7 +94,7 @@ const Teachers = () => {
 
   return (
     <>
-      {notif.show && <Notification type={notif.type} message={notif.message} onClose={() => setNotif({ ...notif, show: false })} />}
+
 
       {newTeacher && <TeacherModal show={newTeacher} setShow={setNewTeacher} setNotif={setNotif} />}
 

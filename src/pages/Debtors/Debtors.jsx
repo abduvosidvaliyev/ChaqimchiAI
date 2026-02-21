@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
 import { Spinner } from "react-bootstrap";
 import DataTable from "../../components/Ui/DataTable";
+import StatusDropdown from "../../components/Ui/StatusFilter";
 
 const Debtors = () => {
     const { theme } = useTheme();
@@ -12,6 +13,11 @@ const Debtors = () => {
 
     const [ordering, setOrdering] = useState("balance");
     const { data: response, isLoading } = useDebtorsStudents({ ordering });
+
+    const orderingStatuses = [
+        { key: "balance", label: "Qarz: Katta → Kichik" },
+        { key: "-balance", label: "Qarz: Kichik → Katta" },
+    ];
 
     const debtors = response?.results || [];
 
@@ -129,15 +135,12 @@ const Debtors = () => {
                     columns={["№", "O'quvchi", "Telefon", "Balans", "Harakat"]}
                     searchKeys={["first_name", "last_name", "phone"]}
                     filter={
-                        <select
-                            className="form-select"
-                            value={ordering}
-                            onChange={(e) => setOrdering(e.target.value)}
-                            style={{ width: "auto", minWidth: "180px" }}
-                        >
-                            <option value="balance">Qarz: Katta → Kichik</option>
-                            <option value="-balance">Qarz: Kichik → Katta</option>
-                        </select>
+                        <StatusDropdown
+                            statuses={orderingStatuses}
+                            currentItem={orderingStatuses.find(s => s.key === ordering) || orderingStatuses[0]}
+                            setCurrentItem={(item) => setOrdering(item.key)}
+                            style={{ width: "200px" }}
+                        />
                     }
                 >
                     {(currentData) =>

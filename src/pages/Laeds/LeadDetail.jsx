@@ -4,14 +4,14 @@ import { Icon } from "@iconify/react"
 import Modal from "../../components/Ui/Modal"
 import { useLead, useLeadHistory, useUpdateLead, useDeleteLead } from "../../data/queries/leads.queries";
 import { Card, Button, Row, Col, Badge, ListGroup, Spinner } from "react-bootstrap";
-import Notification from "../../components/Ui/Notification";
+import { useNotification } from "../../Context/NotificationContext";
 import Back from "../../components/Ui/Back";
 import { useAddLeadToGroup, useGroups } from "../../data/queries/group.queries";
 
 const LeadDetail = () => {
      const { id } = useParams()
      const navigate = useNavigate()
-     const [notif, setNotif] = useState({ show: false, type: 'success', message: '' })
+     const { setNotif } = useNotification()
 
      const { data: groups } = useGroups();
      const { data: lead, isLoading, error } = useLead(id);
@@ -51,6 +51,7 @@ const LeadDetail = () => {
      const handleRemoveLead = () => {
           deleteLead(id, {
                onSuccess: () => {
+                    setNotif({ show: true, type: 'deleted', message: 'Lid ma\'lumotlari o\'chirildi' });
                     navigate("/leads")
                },
                onError: (err) => {
@@ -118,14 +119,7 @@ const LeadDetail = () => {
 
      return (
           <div className="container-fluid p-4" style={{ color: '#e2e2e2' }}>
-               {/* Notification */}
-               {notif.show && (
-                    <Notification
-                         type={notif.type}
-                         message={notif.message}
-                         onClose={() => setNotif({ ...notif, show: false })}
-                    />
-               )}
+
 
                {/* Modal for adding group */}
                {addGroup &&
@@ -171,27 +165,26 @@ const LeadDetail = () => {
                {/* Modal for removing lead */}
                {removeLead &&
                     <Modal
-                         title="O'quvchini ro'yhatdan o'chirish"
+                         title="Lid ro'yhatdan o'chirish"
                          close={() => setRemoveLead(false)}
                          anima={removeLead}
-                         width="400px"
+                         width="30%"
+                         zIndex={100}
                     >
-                         <div className="p-3">
-                              <div className="text-center mb-4">
-                                   <div className="d-inline-flex p-3 rounded-circle bg-danger bg-opacity-10 mb-3">
-                                        <Icon icon="material-symbols:delete-outline" width="32" className="text-danger" />
-                                   </div>
-                                   <h5>Ishonchingiz komilmi?</h5>
-                                   <p className="text-white-50 small">Siz bu lidni ro'yxatdan butunlay o'chirib yubormoqchisiz. Bu amalni ortga qaytarib bo'lmaydi.</p>
-                              </div>
-                              <div className="d-flex justify-content-center gap-2">
-                                   <Button variant="secondary" className="px-4 rounded-pill bg-opacity-50" onClick={() => setRemoveLead(false)}>
-                                        Bekor qilish
-                                   </Button>
-                                   <Button variant="danger" className="px-4 rounded-pill shadow-sm" onClick={handleRemoveLead}>
-                                        O'chirish
-                                   </Button>
-                              </div>
+                         <p>Ushbu lidni rostdan ham o'chirmoqchimisiz?</p>
+                         <div className="d-flex justify-content-end gap-2">
+                              <button
+                                   className="btn btn-sm cencel-button"
+                                   onClick={() => setRemoveLead(false)}
+                              >
+                                   Orqaga
+                              </button>
+                              <button
+                                   className="btn btn-sm delete-button"
+                                   onClick={handleRemoveLead}
+                              >
+                                   Ha
+                              </button>
                          </div>
                     </Modal>
                }
@@ -206,22 +199,19 @@ const LeadDetail = () => {
                     </div>
                     <div className="d-flex gap-2">
                          <button
-                              className="btn py-2 px-3 fs-3 button-delate"
-                              style={{ border: "2px solid #cd3232", color: "#cd3232" }}
+                              className="btn btn-sm delete-button"
                               onClick={() => setRemoveLead(true)}
                          >
                               <Icon icon="iconamoon:trash" width="24" className="me-1" height="24" />
                               O'chirish
                          </button>
-                         <Button
-                              variant="primary"
-                              className="rounded-pill px-4 py-2 d-flex align-items-center gap-2 shadow-sm"
-                              style={{ background: 'linear-gradient(45deg, #0085db, #00c8ff)', border: 'none' }}
+                         <button
+                              className="btn btn-sm save-button d-flex align-items-center gap-1"
                               onClick={() => setAddGroup(true)}
                          >
                               <Icon icon="material-symbols:group-add-outline" width="18" />
                               <span className="d-none d-md-inline">Guruhga qo'shish</span>
-                         </Button>
+                         </button>
                     </div>
                </div>
 

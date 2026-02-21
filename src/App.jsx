@@ -20,6 +20,7 @@ import Rooms from "./pages/Rooms/Rooms";
 import Courses from "./pages/Courses/Courses";
 import Debtors from "./pages/Debtors/Debtors";
 import { ThemeProvider, useTheme } from "./Context/Context";
+import { NotificationProvider } from "./Context/NotificationContext";
 
 
 function App() {
@@ -37,34 +38,36 @@ function App() {
 
   return (
     <ThemeProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
+      <NotificationProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
 
 
-          <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<LayoutWithTheme />}>
-              <Route index element={<Home />} />
-              <Route path="chats" element={<Chats />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="teachers" element={<Teachers />} />
-              <Route path="students" element={<Students />} />
-              <Route path="groups" element={<Groups />} />
-              <Route path="leads" element={<Leads />} />
-              <Route path="rooms" element={<Rooms />} />
-              <Route path="courses" element={<Courses />} />
-              <Route path="debtors" element={<Debtors />} />
-              <Route path="groups/:id" element={<GroupDetalie />} />
-              <Route path="teachers/:id" element={<TeacherDetaile />} />
-              <Route path="students/:id" element={<StudentDetaile />} />
-              <Route path="leads/:id" element={<LeadDetail />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/" element={<LayoutWithTheme />}>
+                <Route index element={<Home />} /> //
+                <Route path="chats" element={<Chats />} /> 
+                <Route path="profile" element={<Profile />} />
+                <Route path="teachers" element={<Teachers />} />
+                <Route path="students" element={<Students />} />//
+                <Route path="groups" element={<Groups />} />
+                <Route path="leads" element={<Leads />} />
+                <Route path="rooms" element={<Rooms />} />
+                <Route path="courses" element={<Courses />} />
+                <Route path="debtors" element={<Debtors />} />
+                <Route path="groups/:id" element={<GroupDetalie />} />
+                <Route path="teachers/:id" element={<TeacherDetaile />} />
+                <Route path="students/:id" element={<StudentDetaile />} /> //
+                <Route path="leads/:id" element={<LeadDetail />} />
+              </Route>
             </Route>
-          </Route>
 
-          <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-      </BrowserRouter>
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </NotificationProvider>
     </ThemeProvider>
   );
 }

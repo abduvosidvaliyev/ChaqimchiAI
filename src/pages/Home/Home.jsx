@@ -3,7 +3,7 @@ import { useTheme } from '../../Context/Context';
 import { useProfile } from '../../data/queries/profile.queries';
 import { useStudentsData } from '../../data/queries/students.queries';
 import { useEffect, useState } from 'react';
-import Notification from '../../components/Ui/Notification';
+import { useNotification } from '../../Context/NotificationContext';
 import { useNavigate } from 'react-router-dom';
 import PaymentModal from './Modals/PaymentModal';
 import ScheduleModal from './Modals/ScheduleModal';
@@ -23,7 +23,7 @@ const Home = () => {
   const studentsData = students?.results
 
 
-  const [notif, setNotif] = useState({ show: false, type: "success", message: "" })
+  const { setNotif } = useNotification()
   const [recentStudents, setRecentStudents] = useState([])
   const [paymentModal, setPaymentModal] = useState(false)
   const [scheduleModal, setScheduleModal] = useState(false)
@@ -118,13 +118,7 @@ const Home = () => {
   return (
     <>
 
-      {notif.show && (
-        <Notification
-          type={notif.type}
-          message={notif.message}
-          onClose={() => setNotif({ ...notif, show: false })}
-        />
-      )}
+
 
       {paymentModal && (
         <PaymentModal

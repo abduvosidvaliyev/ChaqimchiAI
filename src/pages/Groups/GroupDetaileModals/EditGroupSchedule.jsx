@@ -58,12 +58,12 @@ const EditGroupSchedule = ({
             !currentSchedule.room ||
             !currentSchedule.teacher
         ) {
-            setNotif({ show: true, type: 'error', message: "Barcha maydonlarni to'ldiring!" })
+            setNotif({ show: true, type: 'warn', message: "Barcha maydonlarni to'ldiring!" })
             return;
         }
 
         if (!id) {
-            setNotif({ show: true, type: "error", message: "Guruh IDsi topilmadi" });
+            setNotif({ show: true, type: "warn", message: "Guruh IDsi topilmadi" });
             return;
         }
         const dataToSend = {

@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Table } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { useTheme } from "../../Context/Context"
-import Notification from "../../components/Ui/Notification"
+import { useNotification } from "../../Context/NotificationContext"
 import { useCreateGroup, useGroups } from "../../data/queries/group.queries"
 import { useCourses } from "../../data/queries/courses.queries"
 import AddGroup from "./GroupDetaileModals/AddGroup"
@@ -17,7 +17,7 @@ const Groups = () => {
   const { data: groupsData, isLoading: groupsLoading } = useGroups()
   if (groupsLoading) return <div>Loading...</div>
 
-  const [notif, setNotif] = useState({ show: false, type: 'success', message: '' })
+  const { setNotif } = useNotification()
 
   const [addGroup, setAddGroup] = useState(false)
 
@@ -35,14 +35,7 @@ const Groups = () => {
   return (
     <>
 
-      {/* Bildirishnoma */}
-      {notif.show && (
-        <Notification
-          type={notif.type}
-          message={notif.message}
-          onClose={() => setNotif({ ...notif, show: false })}
-        />
-      )}
+
 
       {/* Modal for add new group */}
       {addGroup && (

@@ -19,7 +19,7 @@ import {
 import BreadcrumbComponent from "../../components/Ui/BreadcrumbComponent";
 import Modal from "../../components/Ui/Modal"
 import { Input } from "../../components/Ui/Input";
-import Notification from "../../components/Ui/Notification";
+import { useNotification } from "../../Context/NotificationContext";
 import { useChangePassword, useProfile } from "../../data/queries/profile.queries"
 import { useTheme } from "../../Context/Context";
 
@@ -28,7 +28,7 @@ const Profile = () => {
   const { theme } = useTheme();
 
   const [EditModal, setEditModal] = useState(false)
-  const [notif, setNotif] = useState({ show: false, type: 'success', message: '' })
+  const { setNotif } = useNotification()
   const [passwordStatus, setPasswordStatus] = useState("");
 
   const [passwordData, setPasswordData] = useState({
@@ -205,13 +205,7 @@ const Profile = () => {
       )}
 
 
-      {notif.show && (
-        <Notification
-          type={notif.type}
-          message={notif.message}
-          onClose={() => setNotif({ ...notif, show: false })}
-        />
-      )}
+
 
 
       <div className="row">

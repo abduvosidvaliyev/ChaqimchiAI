@@ -2,7 +2,7 @@ import { Card, Spinner } from "react-bootstrap"
 import { Icon } from "@iconify/react"
 import { useState } from "react";
 import { Input } from "../../components/Ui/Input";
-import Notification from "../../components/Ui/Notification"
+import { useNotification } from "../../Context/NotificationContext"
 import Modal from "../../components/Ui/Modal"
 
 // API malumotlarini olish
@@ -45,15 +45,14 @@ const Leads = () => {
      const { data: courses } = useCourses()
      const coursesData = courses?.results
 
-     if (isLoading) return <div>Loading...</div>
-     if (error) return <div style={{ color: "red" }}>Xatolik: {error.message}</div>
-
      const [opemModal, setOpemModal] = useState(false)
      const [show, setShow] = useState(false)
-
      const [changeData, setChangeData] = useState({})
 
-     const [notif, setNotif] = useState({ show: false, type: 'success', message: '' })
+     const { setNotif } = useNotification()
+
+     if (isLoading) return <div>Loading...</div>
+     if (error) return <div style={{ color: "red" }}>Xatolik: {error.message}</div>
 
      // lead malumotlarini o'zgartirish
      const changeLeadsData = (e) => {
@@ -63,8 +62,6 @@ const Leads = () => {
                changeData.first_name ||
                changeData.last_name ||
                changeData.phone ||
-               changeData.course ||
-               changeData.teacher ||
                changeData.week_days
           )) {
                setNotif({ show: true, type: "warn", message: "Asosiy joylarni to'ldiring!" })
@@ -88,7 +85,8 @@ const Leads = () => {
                          setOpemModal(false)
                          setChangeData({})
                     },
-                    onError: () => {
+                    onError: (err) => {
+                         console.error(err)
                          setNotif({ show: true, type: "error", message: "Xatolik yuz berdi!" })
                     }
                }
@@ -97,17 +95,6 @@ const Leads = () => {
 
      return (
           <>
-
-               {/* Bildirishnoma */}
-               {notif.show && (
-                    <Notification
-                         type={notif.type}
-                         message={notif.message}
-                         onClose={() => setNotif({ ...notif, show: false })}
-                    />
-               )}
-
-
                {/* Ma'lumotni tahrirlash uchun modal */}
                {opemModal &&
                     <Modal

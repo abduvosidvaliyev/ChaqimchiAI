@@ -3,7 +3,7 @@ import { useStudentsData } from "../../data/queries/students.queries";
 import DataTable from "../../components/Ui/DataTable";
 import StatusDropdown from "../../components/Ui/StatusFilter";
 import NoteOffcanvas from "../../components/Ui/NoteOffcanvas";
-import Notification from "../../components/Ui/Notification";
+import { useNotification } from "../../Context/NotificationContext";
 import { Icon } from "@iconify/react";
 import { useTheme } from "../../Context/Context";
 import StudentAdd from "./components/StudentAdd";
@@ -32,7 +32,7 @@ const Students = () => {
   const { data: students, isLoading, error } = useStudentsData(filters);
   const studentsData = students?.results || [];
 
-  const [notif, setNotif] = useState({ show: false, message: "", type: "" });
+  const { setNotif } = useNotification();
 
   const [showNotes, setShowNotes] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -57,15 +57,7 @@ const Students = () => {
   return (
     <>
 
-      {
-        notif.show && (
-          <Notification
-            message={notif.message}
-            type={notif.type}
-            onClose={() => setNotif({ ...notif, show: false })}
-          />
-        )
-      }
+
 
       {isAddModalOpen && (
         <StudentAdd

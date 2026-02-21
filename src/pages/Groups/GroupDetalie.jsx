@@ -8,7 +8,7 @@ import Modal from "../../components/Ui/Modal";
 import StudentsTable from "./Components/StudentsTable";
 import AttendenceTable from "./Components/AttendenceTable";
 import Schedule from "./Components/Schedule";
-import Notification from "../../components/Ui/Notification";
+import { useNotification } from "../../Context/NotificationContext";
 
 import { useDeleteGroup, useEditGroup, useGroup, useGroupSchedule, useGroupStudents } from "../../data/queries/group.queries"
 import { useRoomsData } from "../../data/queries/room.queries"
@@ -77,7 +77,7 @@ const GroupDetalie = () => {
      const [currentSchedule, setCurrentSchedule] = useState({})
 
 
-     const [notif, setNotif] = useState({ show: false, type: 'success', message: '' })
+     const { setNotif } = useNotification()
 
      const [activeTab, setActiveTab] = useState("students")
      const [changeActiveItem, setChangeActiveItem] = useState(false)
@@ -175,14 +175,7 @@ const GroupDetalie = () => {
      return (
           <div onClick={() => changeAttande ? setChangeAttande([]) : setChangeAttande(changeAttande)}>
 
-               {/* Bildirishnoma */}
-               {notif.show && (
-                    <Notification
-                         type={notif.type}
-                         message={notif.message}
-                         onClose={() => setNotif({ ...notif, show: false })}
-                    />
-               )}
+
 
                {/* Guruh malumotlarini tahrirlash */}
                {changeGroup && (
