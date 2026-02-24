@@ -21,6 +21,7 @@ import Courses from "./pages/Courses/Courses";
 import Debtors from "./pages/Debtors/Debtors";
 import { ThemeProvider, useTheme } from "./Context/Context";
 import { NotificationProvider } from "./Context/NotificationContext";
+import Statistics from "./pages/Statistics/Statistics";
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
                 <Route path="rooms" element={<Rooms />} />
                 <Route path="courses" element={<Courses />} />
                 <Route path="debtors" element={<Debtors />} />
+                <Route path="statistics" element={<Statistics />} />
                 <Route path="groups/:id" element={<GroupDetalie />} />
                 <Route path="teachers/:id" element={<TeacherDetaile />} />
                 <Route path="students/:id" element={<StudentDetaile />} /> //

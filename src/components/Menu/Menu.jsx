@@ -125,13 +125,13 @@ const Menu = ({ employee, toggleTheme, togglebar, setMedia }) => {
                     <li className="sidebar-item">
                       <NavLink
                         className="sidebar-link indigo-hover-bg"
-                        to="/lessons"
+                        to="/statistics"
                         aria-expanded="false"
                       >
                         <span className="aside-icon p-2 bg-indigo-subtle rounded-1">
-                          <Icon icon="solar:planet-3-line-duotone" className="fs-6" />
+                          <Icon icon="solar:chart-2-bold-duotone" className="fs-6" />
                         </span>
-                        {togglebar || mouseMove ? <span className="hide-menu ps-1">Darslar</span> : ''}
+                        {togglebar || mouseMove ? <span className="hide-menu ps-1">Statistika</span> : ''}
                       </NavLink>
                     </li>
 
