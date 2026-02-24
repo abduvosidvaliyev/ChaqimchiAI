@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { DateRangePicker } from 'react-date-range';
 import { addDays, endOfDay, startOfDay, isSameDay } from 'date-fns';
 import { uz } from 'date-fns/locale';
@@ -37,9 +37,11 @@ const staticRangesLabels = [
   },
 ];
 
-const CalendarSelector = ({ onRangeSelect, filters, placeholder }) => {
+const CalendarSelector = ({ onRangeSelect, filters, placeholder, style, className }) => {
   const { theme } = useTheme();
   const [open, setOpen] = useState(false);
+  const [dropdownPos, setDropdownPos] = useState({});
+  const dropdownRef = useRef(null);
 
   // filters.start_date bo'sh bo'lsa tanlovni bekor qilish
   useEffect(() => {
@@ -59,6 +61,45 @@ const CalendarSelector = ({ onRangeSelect, filters, placeholder }) => {
   ]);
 
   const ref = useRef(null);
+
+  // Dropdown pozitsiyasini hisoblash
+  const calcPosition = useCallback(() => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const dropdownW = 500; // taxminiy dropdown kengligi
+    const dropdownH = 400; // taxminiy dropdown balandligi
+    const gap = 8;
+
+    const pos = {};
+
+    // Vertikal: pastga sig'adimi?
+    if (rect.bottom + dropdownH + gap > window.innerHeight && rect.top - dropdownH - gap > 0) {
+      // Tepaga ochilsin
+      pos.bottom = '110%';
+      pos.top = 'auto';
+    } else {
+      // Pastga ochilsin (default)
+      pos.top = '110%';
+      pos.bottom = 'auto';
+    }
+
+    // Gorizontal: o'ngga sig'adimi?
+    if (rect.left + dropdownW > window.innerWidth) {
+      // O'ngdan joylash
+      pos.right = '0';
+      pos.left = 'auto';
+    } else {
+      // Chapdan joylash (default)
+      pos.left = '0';
+      pos.right = 'auto';
+    }
+
+    setDropdownPos(pos);
+  }, []);
+
+  useEffect(() => {
+    if (open) calcPosition();
+  }, [open, calcPosition]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -89,8 +130,8 @@ const CalendarSelector = ({ onRangeSelect, filters, placeholder }) => {
   };
 
   return (
-    <div className={`calendar ${!theme ? 'dark-theme' : 'light-theme'}`} ref={ref}>
-      <div className="input-box border" onClick={() => setOpen(!open)} style={{ cursor: 'pointer' }}>
+    <div className={`calendar ${!theme ? 'dark-theme' : 'light-theme'} ${className || ''}`} ref={ref} style={style}>
+      <div className="input-box border cursor-pointer" onClick={() => setOpen(!open)} style={style}>
         <span className="icon">
           <Icon icon="famicons:calendar-outline" width="20" height="20" />
         </span>
@@ -107,7 +148,7 @@ const CalendarSelector = ({ onRangeSelect, filters, placeholder }) => {
       </div>
 
       {open && (
-        <div className="calendar-dropdown">
+        <div className="calendar-dropdown" ref={dropdownRef} style={dropdownPos}>
           <DateRangePicker
             onChange={handleSelect}
             showSelectionPreview={true}
