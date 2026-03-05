@@ -35,7 +35,7 @@ const Header = ({ employee, toggleTheme, setToggleTheme, setTogglebar, setShowba
     setTogglebar(true);
   }
   return (
-    <header className="topbar sticky-top">
+    <header className="topbar sticky-top ">
       <div className="with-vertical">
         <nav className="navbar position-relative navbar-expand-lg p-0">
           <li
@@ -57,18 +57,7 @@ const Header = ({ employee, toggleTheme, setToggleTheme, setTogglebar, setShowba
               <Icon icon="solar:list-bold-duotone" onClick={HandleMedia} className="fs-7" />
             </a>
           </li>
-
-          <ul className="navbar-nav quick-links d-none d-lg-flex align-items-center">
-            <li className="nav-item dropdown-hover d-none d-lg-block me-2">
-              <Link
-                to="/chats"
-                className="nav-link header__blank-link"
-              >
-                Chat
-              </Link>
-            </li>
-          </ul>
-
+          
           <div
             className="collapse navbar-collapse justify-content-end"
             id="navbarNav"

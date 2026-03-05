@@ -231,7 +231,7 @@ const Leads = () => {
 
                {show && <NewLead setNotif={setNotif} setShow={setShow} show={show} />}
 
-               <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mx-1 me-3 pb-3">
+               <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mx-1 pb-3">
                     <div className="d-flex flex-column gap-1">
                          <h4 className="fs-6">Lidlar ro'yhati</h4>
                          <span className="text-muted">Barcha lidlar ma'lumotlari</span>
@@ -248,7 +248,7 @@ const Leads = () => {
                </div>
 
 
-               <div className="row gap-2 ps pe-4" style={{ paddingLeft: "13px" }}>
+               <div className="row gap-3 px-3">
                     <Card className="col lidCard">
                          <Card.Body className="d-flex justify-content-between align-items-center px-2 py-3">
                               <div className="d-flex flex-column gap-1">

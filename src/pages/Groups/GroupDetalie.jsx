@@ -269,7 +269,7 @@ const GroupDetalie = () => {
 
                <Back />
 
-               <div className="d-flex w-100 justify-content-between align-items-start pe-3">
+               <div className="d-flex w-100 justify-content-between align-items-start">
                     <div className="d-flex align-items-start gap-2">
                          <span
                               style={{ width: "45px", height: "45px", color: "#05c9ff", borderRadius: "8px", background: "#00a0ea25" }}
@@ -316,7 +316,7 @@ const GroupDetalie = () => {
                     </div>
                </div>
 
-               <div className="d-flex pt-4 justify-content-between align-items-center gap-3 pe-3">
+               <div className="d-flex pt-4 justify-content-between align-items-center gap-3">
                     <div
                          className="card card-hover px-4 border py-4"
                          style={{ width: "33%" }}
@@ -352,14 +352,14 @@ const GroupDetalie = () => {
                          <Dropdown autoClose="outside inside" className="mt-2">
                               <Dropdown.Toggle className={`fs-4 ${!theme ? "text-white" : "text-black"}`} style={{ background: 'transparent', border: 'none', padding: '0' }}>
                                    {
-                                        t?.days_of_week.map(d => " " + d.code) && t?.begin_time.slice(0, 5) !== "undifined" ? t?.days_of_week.map(d => " " + d.code) + " | " + t?.begin_time.slice(0, 5) : "Belgilanmagan"
+                                        t?.days_of_week.map(d => " " + d.full) && t?.begin_time.slice(0, 5) !== "undifined" ? t?.days_of_week.map(d => " " + d.full) + " | " + t?.begin_time.slice(0, 5) : "Belgilanmagan"
                                    }
                               </Dropdown.Toggle>
 
                               <Dropdown.Menu>
                                    {currentGroup?.schedule_items?.active?.map(item => (
                                         <Dropdown.Item className="fs-4 rounded-2">
-                                             {" " + item.days_of_week.map(d => d.code) + " | " + item.begin_time.slice(0, 5)}
+                                             {" " + item.days_of_week.map(d => d.full) + " | " + item.begin_time.slice(0, 5)}
                                         </Dropdown.Item>
                                    ))}
                               </Dropdown.Menu>
@@ -447,7 +447,7 @@ const GroupDetalie = () => {
                          </Nav>
                     </div>
 
-                    <Tab.Content className="mt-3 pe-3">
+                    <Tab.Content className="mt-3">
                          <Tab.Pane eventKey="students">
                               {/* O'quvchilar ro'yxati shu yerda bo'ladi */}
                               <Card>
@@ -489,8 +489,9 @@ const GroupDetalie = () => {
                                              days_of_week={t?.days_of_week}
                                              scheduleId={t?.id}
                                              id={id}
+                                             setNotif={setNotif}
+                                             studentsData={studentsData}
                                         />
-
                                    </Card.Body>
                               </Card>
                          </Tab.Pane>

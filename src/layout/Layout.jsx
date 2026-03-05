@@ -70,7 +70,7 @@ const Layout = ({ toggleTheme, setToggleTheme }) => {
         />
       </aside>
 
-      <main className="layout-content">
+      <main className="layout-content pe-3">
         {/* user ma’lumotlarini Header ga yuboramiz */}
         <Header
           employee={employee}
