@@ -7,7 +7,6 @@ import Profile from "./pages/Profile/Profile";
 import Login from "./pages/Login/Login";
 import Logout from "./pages/Logout/Logout";
 import ProtectedRoute from "./components/Ui/ProtectedRoute";
-import Chats from "./pages/Chats/Chats";
 import Teachers from "./pages/Teachers/Teachers";
 import TeacherDetaile from "./pages/Teachers/TeacherDetaile";
 import Students from "./pages/Students/Students";
@@ -49,7 +48,6 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<LayoutWithTheme />}>
                 <Route index element={<Home />} />
-                <Route path="chats" element={<Chats />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="teachers" element={<Teachers />} />
                 <Route path="students" element={<Students />} />
