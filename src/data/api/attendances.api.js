@@ -1,7 +1,7 @@
 import api from "./axios";
 
 export const getAttendances = (id) =>
-    api.post(`/attendances/`).then(res => res.data.data)    
+    api.post(`/attendances/`).then(res => res.data.data)
 
 export const getStudentAttendances = (student_id, month, year) =>
     api.get(`/attendances/student/${student_id}/`, {

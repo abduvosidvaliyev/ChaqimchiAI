@@ -40575,7 +40575,7 @@ pre.code-view code.hljs {
     padding: 0 15px;
     margin-bottom: 24px;
     box-shadow: 0 2px 6px rgba(37, 83, 185, .1);
-    border-radius: 1.125rem
+    border-radius: 1.125rem;
 }
 
 .topbar .navbar {

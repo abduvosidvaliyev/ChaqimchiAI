@@ -7,7 +7,6 @@ import Profile from "./pages/Profile/Profile";
 import Login from "./pages/Login/Login";
 import Logout from "./pages/Logout/Logout";
 import ProtectedRoute from "./components/Ui/ProtectedRoute";
-import Chats from "./pages/Chats/Chats";
 import Teachers from "./pages/Teachers/Teachers";
 import TeacherDetaile from "./pages/Teachers/TeacherDetaile";
 import Students from "./pages/Students/Students";
@@ -48,11 +47,10 @@ function App() {
 
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<LayoutWithTheme />}>
-                <Route index element={<Home />} /> //
-                <Route path="chats" element={<Chats />} /> 
+                <Route index element={<Home />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="teachers" element={<Teachers />} />
-                <Route path="students" element={<Students />} />//
+                <Route path="students" element={<Students />} />
                 <Route path="groups" element={<Groups />} />
                 <Route path="leads" element={<Leads />} />
                 <Route path="rooms" element={<Rooms />} />
@@ -61,7 +59,7 @@ function App() {
                 <Route path="statistics" element={<Statistics />} />
                 <Route path="groups/:id" element={<GroupDetalie />} />
                 <Route path="teachers/:id" element={<TeacherDetaile />} />
-                <Route path="students/:id" element={<StudentDetaile />} /> //
+                <Route path="students/:id" element={<StudentDetaile />} />
                 <Route path="leads/:id" element={<LeadDetail />} />
               </Route>
             </Route>
